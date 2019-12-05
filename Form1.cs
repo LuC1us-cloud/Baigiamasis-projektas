@@ -12,14 +12,16 @@ namespace movable_2dmap
 {
     public partial class Form1 : Form
     {
-        static MapTile[,] map = new MapTile[110, 110];
+        static int SizeOfArray = 110;
+        static MapTile[,] map = new MapTile[SizeOfArray, SizeOfArray];
         static List<Biome> biomes = new List<Biome>();
         static Point mouseDragStart;
         static int startingPointX = 50;
         static int startingPointY = 50;
+        static int visibleMapSizeHorizontal = 20;
+        static int visibleMapSizeVertical = 20;
         public Form1()
         {
-
             InitializeComponent();
             Invalidate();
         }
@@ -27,7 +29,6 @@ namespace movable_2dmap
         {
             // Possible Tiles: Grass,  Gravel, Tree, Stone, High stone (mountain), <(Technical tiles)>.
             Random random = new Random();
-            int SizeOfArray = 110;
             Console.WriteLine(SizeOfArray);
             int ForestAmount = random.Next(SizeOfArray/30 - 1, SizeOfArray/30 + 1);
             Console.WriteLine(ForestAmount);
@@ -73,7 +74,7 @@ namespace movable_2dmap
                     else
                     {
                         moverX = -1;
-                        if(startingPointX < 100)
+                        if(startingPointX < 90)
                         {
                             startingPointX++;
                             Invalidate();
@@ -95,7 +96,7 @@ namespace movable_2dmap
                     else
                     {
                         moverY = -1;
-                        if (startingPointY < 100)
+                        if (startingPointY < 90)
                         {
                             startingPointY++;
                             Invalidate();
@@ -119,17 +120,17 @@ namespace movable_2dmap
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
-            for (int x = startingPointX; x < startingPointX + 10; x++)
+            for (int x = startingPointX; x < startingPointX + visibleMapSizeHorizontal; x++)
             {
-                for (int y = startingPointY; y < startingPointY + 10; y++)
+                for (int y = startingPointY; y < startingPointY + visibleMapSizeVertical; y++)
                 {
                     e.Graphics.FillRectangle(new SolidBrush(map[x, y].AltColor), new Rectangle(new Point(10 + (x - startingPointX) * 20, 10 + (y - startingPointY) * 20), new Size(20, 20)));
                 }
             }
-            for (int x = 0; x <= 10; x++)
+            for (int x = 0; x <= visibleMapSizeHorizontal; x++)
             {
-                e.Graphics.DrawLine(new Pen(Color.Black), new Point(10 + x * 20, 10), new Point(10 + x * 20, 210));
-                e.Graphics.DrawLine(new Pen(Color.Black), new Point(10, 10 + x * 20), new Point(210, 10 + x * 20));
+                e.Graphics.DrawLine(new Pen(Color.Black), new Point(10 + x * 20, 10), new Point(10 + x * 20, 410));
+                e.Graphics.DrawLine(new Pen(Color.Black), new Point(10, 10 + x * 20), new Point(410, 10 + x * 20));
             }
         }
     }
