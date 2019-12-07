@@ -20,7 +20,8 @@ namespace movable_2dmap
         {
             // Possible Tiles: Grass,  Gravel, Tree, Stone, High stone (mountain), <(Technical tiles)>.
             Random random = new Random();
-            int ForestAmount = random.Next(SizeOfArray / 30 - 1, SizeOfArray / 30 + 1);
+            int ForestPatchAmount = random.Next(SizeOfArray / 30 - 1, SizeOfArray / 30 + 1);
+            //int GravelPatchAmount = random.Next(SizeOfArray / );
             //fills map with grass
             for (int x = 0; x < 110; x++)
             {
@@ -30,14 +31,38 @@ namespace movable_2dmap
                 }
             }
             //Generates Forests and their center points are saved (will be)
-            for (int forest = 0; forest < ForestAmount; forest++)
+            for (int forest = 0; forest < ForestPatchAmount; forest++)
             {
                 biomes.Add(new Biome("Forest", new Point(random.Next(0, 110), random.Next(0, 110))));
             }
+            //Generates gravel pathches 
+            //for (int gravel = 0; gravel < GravelPatchAmount; gravel++)
+            {
+
+            }
+            //Prints names and locations of all special biomes on map
             foreach (var item in biomes)
             {
-                Console.WriteLine(item.Location);
+                Console.WriteLine(item.Name + " at: " + item.Location);
                 map[item.Location.X, item.Location.Y].AltColor = Color.Black;
+                GenerateCircularBiomes(item, 4);
+            }
+        }
+        public static void GenerateCircularBiomes(Biome biome, int sizeRadius)
+        {
+            for (double x = -sizeRadius; x <= sizeRadius; x=x+0.1)
+            {
+                if (true)
+                {
+                    map[Convert.ToInt32((x + biome.Location.X)), Convert.ToInt32((Math.Sqrt(Math.Abs(x * x - sizeRadius * sizeRadius)))) + biome.Location.Y].AltColor = Color.Red;
+                    Console.WriteLine(Convert.ToInt32((x + biome.Location.X)) + " " + Convert.ToInt16((Math.Sqrt(Math.Abs(x * x - sizeRadius * sizeRadius)))) + biome.Location.Y);
+                }
+                if (true)
+                {
+                    map[Convert.ToInt32((x + biome.Location.X)), -Convert.ToInt32((Math.Sqrt(Math.Abs(x * x - sizeRadius * sizeRadius)))) + biome.Location.Y].AltColor = Color.Red;
+                    Console.WriteLine(Convert.ToInt32((x + biome.Location.X)) + " " + -Convert.ToInt32((Math.Sqrt(Math.Abs(x * x - sizeRadius * sizeRadius)))) + biome.Location.Y);
+
+                }
             }
         }
         public static void DrawMapAndGrid(object sender, PaintEventArgs e, int startingPointX, int startingPointY)
