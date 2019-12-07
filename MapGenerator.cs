@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace movable_2dmap
 {
     public static class MapGenerator
     {
-        static int SizeOfArray = 110;
-        static MapTile[,] map = new MapTile[SizeOfArray, SizeOfArray];
+        public static int SizeOfArray = 110;
+        public static MapTile[,] map = new MapTile[SizeOfArray, SizeOfArray];
         static List<Biome> biomes = new List<Biome>();
         static int visibleMapSizeHorizontal = 20;
         static int visibleMapSizeVertical = 20;
@@ -36,7 +33,6 @@ namespace movable_2dmap
             }
             foreach (var item in biomes)
             {
-                Console.WriteLine(item.Location);
                 map[item.Location.X, item.Location.Y].AltColor = Color.Black;
             }
         }

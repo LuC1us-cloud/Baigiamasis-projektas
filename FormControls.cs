@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 using System.Windows.Forms;
 
 namespace movable_2dmap
@@ -29,7 +24,7 @@ namespace movable_2dmap
                         if (startingPointX > 0)
                         {
                             startingPointX--;
-                            Form1.ActiveForm.Invalidate();
+                            Form.ActiveForm.Invalidate();
                         }
                     }
                     else
@@ -38,7 +33,7 @@ namespace movable_2dmap
                         if (startingPointX < 90)
                         {
                             startingPointX++;
-                            Form1.ActiveForm.Invalidate();
+                            Form.ActiveForm.Invalidate();
                         }
                     }
                     mouseDragStart.X += moverX * 20;
@@ -51,7 +46,7 @@ namespace movable_2dmap
                         if (startingPointY > 0)
                         {
                             startingPointY--;
-                            Form1.ActiveForm.Invalidate();
+                            Form.ActiveForm.Invalidate();
                         }
                     }
                     else
@@ -60,11 +55,22 @@ namespace movable_2dmap
                         if (startingPointY < 90)
                         {
                             startingPointY++;
-                            Form1.ActiveForm.Invalidate();
+                            Form.ActiveForm.Invalidate();
                         }
                     }
                     mouseDragStart.Y += moverY * 20;
                 }
+            }
+        }
+
+        public static int counter = 0;
+
+        public static void SelectionUI(object sender, MouseEventArgs e)
+        {
+            counter++;
+            if (counter == 4 * 20)
+            {
+                counter = 0;
             }
         }
     }

@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace movable_2dmap
@@ -39,6 +32,12 @@ namespace movable_2dmap
         {
             //Draws the map and grid
             MapGenerator.DrawMapAndGrid(sender, e, FormControls.startingPointX, FormControls.startingPointY);
+        }
+
+        private void Form1_MouseClick(object sender, MouseEventArgs e)
+        {
+            //Places or removes tile
+            MapTile.PlaceTile(e);
         }
     }
 }
