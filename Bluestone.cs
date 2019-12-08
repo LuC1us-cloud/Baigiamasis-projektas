@@ -4,6 +4,11 @@ namespace movable_2dmap
 {
     class Bluestone
     {
+        /// <summary>
+        /// Checks in four directions if there is a tile with power and returns true if found, returns false otherwise.
+        /// </summary>
+        /// <param name="tileLocation"></param>
+        /// <returns></returns>
         static bool PowerCheck(Point tileLocation)
         {
             if (tileLocation.Y != 0 && (MapGenerator.map[tileLocation.X, tileLocation.Y - 1].Name == "Torch" || MapGenerator.map[tileLocation.X, tileLocation.Y - 1].Name == "Bluestone_powered"))
@@ -25,6 +30,9 @@ namespace movable_2dmap
             return false;
         }
 
+        /// <summary>
+        /// Powers on bluestone that has a powered tile adjacent.
+        /// </summary>
         public static void UpdateBluestone()
         {
             UnpowerBluestone();
@@ -43,6 +51,9 @@ namespace movable_2dmap
             }
         }
 
+        /// <summary>
+        /// Unpowers all bluestone.
+        /// </summary>
         static void UnpowerBluestone()
         {
             foreach (var bluestone in MapTile.placedBluestone)
@@ -51,6 +62,9 @@ namespace movable_2dmap
             }
         }
 
+        /// <summary>
+        /// Unpowers torches that have other torches adjacent.
+        /// </summary>
         public static void UpdateTorches()
         {
             RepowerTorches();
@@ -79,6 +93,9 @@ namespace movable_2dmap
             }
         }
 
+        /// <summary>
+        /// Powers on all torches.
+        /// </summary>
         static void RepowerTorches()
         {
             foreach (var torch in MapTile.placedTorches)
