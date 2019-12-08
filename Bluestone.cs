@@ -36,6 +36,11 @@ namespace movable_2dmap
                     i = 0;
                 }
             }
+            if (MapTile.placedBluestone.Count > 0 && PowerCheck(MapTile.placedBluestone[0]))
+            {
+                MapGenerator.map[MapTile.placedBluestone[0].X, MapTile.placedBluestone[0].Y] = new MapTile("Bluestone_powered", 2, null, Color.Blue);
+
+            }
         }
 
         static void UnpowerBluestone()
