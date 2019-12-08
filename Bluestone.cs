@@ -14,12 +14,12 @@ namespace movable_2dmap
                     MapGenerator.map[MapTile.placedWires[i].X, MapTile.placedWires[i].Y] = new MapTile("Bluestone", 3, null, Color.Blue);
                     i = 0;
                 }
-                if (MapTile.placedWires[i].X != MapGenerator.SizeOfArray - 1 && MapGenerator.map[MapTile.placedWires[i].X + 1, MapTile.placedWires[i].Y].ID == 3 && MapGenerator.map[MapTile.placedWires[i].X, MapTile.placedWires[i].Y].ID != 3)
+                if (MapTile.placedWires[i].X != MapGenerator.sizeOfArray - 1 && MapGenerator.map[MapTile.placedWires[i].X + 1, MapTile.placedWires[i].Y].ID == 3 && MapGenerator.map[MapTile.placedWires[i].X, MapTile.placedWires[i].Y].ID != 3)
                 {
                     MapGenerator.map[MapTile.placedWires[i].X, MapTile.placedWires[i].Y] = new MapTile("Bluestone", 3, null, Color.Blue);
                     i = 0;
                 }
-                if (MapTile.placedWires[i].Y != MapGenerator.SizeOfArray - 1 && MapGenerator.map[MapTile.placedWires[i].X, MapTile.placedWires[i].Y + 1].ID == 3 && MapGenerator.map[MapTile.placedWires[i].X, MapTile.placedWires[i].Y].ID != 3)
+                if (MapTile.placedWires[i].Y != MapGenerator.sizeOfArray - 1 && MapGenerator.map[MapTile.placedWires[i].X, MapTile.placedWires[i].Y + 1].ID == 3 && MapGenerator.map[MapTile.placedWires[i].X, MapTile.placedWires[i].Y].ID != 3)
                 {
                     MapGenerator.map[MapTile.placedWires[i].X, MapTile.placedWires[i].Y] = new MapTile("Bluestone", 3, null, Color.Blue);
                     i = 0;
@@ -28,6 +28,38 @@ namespace movable_2dmap
                 {
                     MapGenerator.map[MapTile.placedWires[i].X, MapTile.placedWires[i].Y] = new MapTile("Bluestone", 3, null, Color.Blue);
                     i = 0;
+                }
+            }
+        }
+
+        public static void UpdateTorches()
+        {
+            for (int i = 0; i < MapTile.placedTorches.Count; i++)
+            {
+                int torchCount = 0;
+                if (MapGenerator.map[MapTile.placedTorches[i].X, MapTile.placedTorches[i].Y - 1].Name != "Torch")
+                {
+                    torchCount++;
+                }
+                if (MapGenerator.map[MapTile.placedTorches[i].X + 1, MapTile.placedTorches[i].Y].Name != "Torch")
+                {
+                    torchCount++;
+                }
+                if (MapGenerator.map[MapTile.placedTorches[i].X, MapTile.placedTorches[i].Y + 1].Name != "Torch")
+                {
+                    torchCount++;
+                }
+                if (MapGenerator.map[MapTile.placedTorches[i].X - 1, MapTile.placedTorches[i].Y].Name != "Torch")
+                {
+                    torchCount++;
+                }
+                if (torchCount == 4)
+                {
+                    MapGenerator.map[MapTile.placedTorches[i].X, MapTile.placedTorches[i].Y] = new MapTile("Torch", 3, null, Color.Magenta);
+                }
+                else if (torchCount != 4)
+                {
+                    MapGenerator.map[MapTile.placedTorches[i].X, MapTile.placedTorches[i].Y] = new MapTile("Torch", 2, null, Color.DarkMagenta);
                 }
             }
         }

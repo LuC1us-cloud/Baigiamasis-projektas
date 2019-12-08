@@ -36,8 +36,7 @@ namespace movable_2dmap
 
         private void Form1_MouseClick(object sender, MouseEventArgs e)
         {
-            //Places or removes tile
-            MapTile.PlaceTile(e);
+            MapTile.ProcessTileChange(e);
         }
     }
 }

@@ -14,8 +14,8 @@ namespace movable_2dmap
             {
                 int moverX;
                 int moverY;
-                moverX = (e.X - mouseDragStart.X) / 20;
-                moverY = (e.Y - mouseDragStart.Y) / 20;
+                moverX = (e.X - mouseDragStart.X) / MapGenerator.sizeOfTile;
+                moverY = (e.Y - mouseDragStart.Y) / MapGenerator.sizeOfTile;
                 if (moverX != 0)
                 {
                     if (moverX > 0)
@@ -30,13 +30,13 @@ namespace movable_2dmap
                     else
                     {
                         moverX = -1;
-                        if (startingPointX < 90)
+                        if (startingPointX < MapGenerator.sizeOfArray - MapGenerator.sizeOfTile)
                         {
                             startingPointX++;
                             Form.ActiveForm.Invalidate();
                         }
                     }
-                    mouseDragStart.X += moverX * 20;
+                    mouseDragStart.X += moverX * MapGenerator.sizeOfTile;
                 }
                 if (moverY != 0)
                 {
@@ -52,25 +52,32 @@ namespace movable_2dmap
                     else
                     {
                         moverY = -1;
-                        if (startingPointY < 90)
+                        if (startingPointY < MapGenerator.sizeOfArray - MapGenerator.sizeOfTile)
                         {
                             startingPointY++;
                             Form.ActiveForm.Invalidate();
                         }
                     }
-                    mouseDragStart.Y += moverY * 20;
+                    mouseDragStart.Y += moverY * MapGenerator.sizeOfTile;
                 }
             }
         }
 
-        public static int counter = 0;
+        static int amountOfTiles = 6;
+        public static int scrollTolerance = 20;
+        public static int selectedID = 0;
 
-        public static void SelectionUI(object sender, MouseEventArgs e)
+        /// <summary>
+        /// Changes selected tile ID based on a counter which is triggered every scroll event.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public static void TileSelection(object sender, MouseEventArgs e)
         {
-            counter++;
-            if (counter == 4 * 20)
+            selectedID++;
+            if (selectedID == amountOfTiles * scrollTolerance)
             {
-                counter = 0;
+                selectedID = 0;
             }
         }
     }
