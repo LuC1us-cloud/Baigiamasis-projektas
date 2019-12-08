@@ -10,10 +10,14 @@ namespace movable_2dmap
             InitializeComponent();
         }
 
+        public static MouseEventArgs mouse;
+        public static Keys keyHeld;
+
         private void Form1_MouseMove(object sender, MouseEventArgs e)
         {
             //Moves the visible map window
             FormControls.MoveVisibleMap(sender, e);
+            mouse = e;
         }
 
         private void Form1_MouseDown(object sender, MouseEventArgs e)
@@ -37,6 +41,15 @@ namespace movable_2dmap
         private void Form1_MouseClick(object sender, MouseEventArgs e)
         {
             MapTile.ProcessTileChange(e);
+        }
+
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            keyHeld = e.KeyData;
+            if (keyHeld == Keys.D)
+            {
+                MapTile.ProcessTileChange(mouse);
+            }
         }
     }
 }

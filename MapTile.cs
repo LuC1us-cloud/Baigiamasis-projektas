@@ -37,7 +37,7 @@ namespace movable_2dmap
         public static void ProcessTileChange(MouseEventArgs e)
         {
             int i = (e.X + MapGenerator.mapOffset) / MapGenerator.sizeOfTile - 1 + FormControls.startingPointX, j = (e.Y + MapGenerator.mapOffset) / MapGenerator.sizeOfTile - 1 + FormControls.startingPointY;
-            if (e.Button == MouseButtons.Left && MapGenerator.map[i, j].ID == 1)
+            if ((Form1.keyHeld == Keys.D || e.Button == MouseButtons.Left) && MapGenerator.map[i, j].ID == 1)
             {
                 MapGenerator.map[i, j] = tileList[FormControls.selectedID / FormControls.scrollTolerance];
                 if (FormControls.selectedID / FormControls.scrollTolerance == 2)
