@@ -19,7 +19,14 @@ namespace movable_2dmap
             AltColor = color;
         }
 
-        public static List<Point> placedWires = new List<Point>();
+        public static List<MapTile> tileList = new List<MapTile>{
+            new MapTile("Null", 0, null, Color.White),
+            new MapTile("Grass", 1, null, Color.GreenYellow),
+            new MapTile("Bluestone", 2, null, Color.DarkBlue),
+            new MapTile("Torch", 3, null, Color.Magenta)
+        };
+
+        public static List<Point> placedBluestone = new List<Point>();
         public static List<Point> placedTorches = new List<Point>();
 
         /// <summary>
@@ -30,64 +37,37 @@ namespace movable_2dmap
         public static void ProcessTileChange(MouseEventArgs e)
         {
             int i = (e.X + MapGenerator.mapOffset) / MapGenerator.sizeOfTile - 1 + FormControls.startingPointX, j = (e.Y + MapGenerator.mapOffset) / MapGenerator.sizeOfTile - 1 + FormControls.startingPointY;
-            if (e.Button == MouseButtons.Left)
+            if (e.Button == MouseButtons.Left && MapGenerator.map[i, j].ID == 1)
             {
-                Color tileColor = new Color();
-                string name = "null";
-                if (MapGenerator.map[i, j].ID == 1)
+                MapGenerator.map[i, j] = tileList[FormControls.selectedID / FormControls.scrollTolerance];
+                if (FormControls.selectedID / FormControls.scrollTolerance == 2)
                 {
-                    switch (FormControls.selectedID / FormControls.scrollTolerance)
-                    {
-                        case 0:
-                            tileColor = Color.White;
-                            break;
-                        case 1:
-                            tileColor = Color.GreenYellow;
-                            name = "Grass";
-                            break;
-                        case 2:
-                            tileColor = Color.DarkBlue;
-                            name = "Bluestone";
-                            placedWires.Add(new Point(i, j));
-                            break;
-                        case 3:
-                            tileColor = Color.Magenta;
-                            name = "Torch";
-                            placedTorches.Add(new Point(i, j));
-                            break;
-                        case 4:
-                            tileColor = Color.Red;
-                            name = "Inversor";
-                            break;
-                        case 5:
-                            tileColor = Color.Orange;
-                            name = "Pulsar";
-                            placedTorches.Add(new Point(i, j));
-                            break;
-                        default:
-                            break;
-                    }
-                    MapGenerator.map[i, j] = new MapTile(name, FormControls.selectedID / FormControls.scrollTolerance, null, tileColor);
-                    Bluestone.UpdateTorches();
-                    Bluestone.UpdateWires();
-                    Form.ActiveForm.Invalidate();
+                    placedBluestone.Add(new Point(i, j));
                 }
+                else if (FormControls.selectedID / FormControls.scrollTolerance == 3)
+                {
+                    placedTorches.Add(new Point(i, j));
+                    Bluestone.UpdateTorches();
+                }
+                Bluestone.UpdateBluestone();
+                Form.ActiveForm.Invalidate();
             }
             else if (e.Button == MouseButtons.Right)
             {
-                if (MapGenerator.map[i, j].Name == "Bluestone" && (MapGenerator.map[i, j].ID == 2 || MapGenerator.map[i, j].ID == 3))
+                if (MapGenerator.map[i, j].Name == "Bluestone" || MapGenerator.map[i, j].Name == "Bluestone_powered")
                 {
-                    placedWires.Remove(new Point(i, j));
-                    Bluestone.UnpowerWires(new Point(i, j));
-                    Bluestone.UpdateWires();
+                    MapGenerator.map[i, j] = tileList[1];
+                    placedBluestone.Remove(new Point(i, j));
+                    Bluestone.UpdateBluestone();
                 }
-                else if (MapGenerator.map[i, j].Name == "Torch" && (MapGenerator.map[i, j].ID == 2 || MapGenerator.map[i, j].ID == 3))
+                else if (MapGenerator.map[i, j].Name == "Torch" || MapGenerator.map[i, j].Name == "Torch_unpowered")
                 {
+                    MapGenerator.map[i, j] = tileList[1];
                     placedTorches.Remove(new Point(i, j));
-                    Bluestone.UnpowerWires(new Point(i, j));
                     Bluestone.UpdateTorches();
+                    Bluestone.UpdateBluestone();
                 }
-                MapGenerator.map[i, j] = new MapTile("Grass", 1, null, Color.GreenYellow);
+                MapGenerator.map[i, j] = tileList[1];
                 Form.ActiveForm.Invalidate();
             }
         }

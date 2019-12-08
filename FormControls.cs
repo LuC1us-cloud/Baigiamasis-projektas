@@ -63,7 +63,7 @@ namespace movable_2dmap
             }
         }
 
-        static int amountOfTiles = 6;
+        static int amountOfTiles = 4;
         public static int scrollTolerance = 20;
         public static int selectedID = 0;
 
@@ -79,6 +79,7 @@ namespace movable_2dmap
             {
                 selectedID = 0;
             }
+            //draw selection UI
         }
     }
 }
