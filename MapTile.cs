@@ -23,11 +23,9 @@ namespace movable_2dmap
             new MapTile("Null", 0, null, Color.White),
             new MapTile("Grass", 1, null, Color.GreenYellow),
             new MapTile("Bluestone", 2, null, Color.DarkBlue),
-            new MapTile("Torch", 3, null, Color.Magenta)
+            new MapTile("Torch", 3, null, Color.Magenta),
+            new MapTile("Delayer", 4, null, Color.Gray)
         };
-
-        public static List<Point> placedBluestone = new List<Point>();
-        public static List<Point> placedTorches = new List<Point>();
 
         /// <summary>
         /// Removes or adds a tile on the map depending on mouse button pressed. Left mouse button press adds a tile, while a right 
@@ -40,32 +38,47 @@ namespace movable_2dmap
             if ((Form1.keyHeld == Keys.D || e.Button == MouseButtons.Left) && MapGenerator.map[i, j].ID == 1)
             {
                 MapGenerator.map[i, j] = tileList[FormControls.selectedID / FormControls.scrollTolerance];
-                if (FormControls.selectedID / FormControls.scrollTolerance == 2)
+                switch (FormControls.selectedID / FormControls.scrollTolerance)
                 {
-                    placedBluestone.Add(new Point(i, j));
-                }
-                else if (FormControls.selectedID / FormControls.scrollTolerance == 3)
-                {
-                    placedTorches.Add(new Point(i, j));
-                    Bluestone.UpdateTorches();
+                    case 2:
+                        Bluestone.placedBluestone.Add(new Point(i, j));
+                        break;
+                    case 3:
+                        Bluestone.placedTorches.Add(new Point(i, j));
+                        Bluestone.UpdateTorches();
+                        break;
+                    case 4:
+                        Bluestone.placedDelayers.Add(new Point(i, j));
+                        Bluestone.DetermineDirection(new Point(i, j));
+                        break;
+                    default:
+                        break;
                 }
                 Bluestone.UpdateBluestone();
                 Form.ActiveForm.Invalidate();
             }
             else if (e.Button == MouseButtons.Right)
             {
-                if (MapGenerator.map[i, j].Name == "Bluestone" || MapGenerator.map[i, j].Name == "Bluestone_powered")
+                switch (MapGenerator.map[i, j].Name)
                 {
-                    MapGenerator.map[i, j] = tileList[1];
-                    placedBluestone.Remove(new Point(i, j));
-                    Bluestone.UpdateBluestone();
-                }
-                else if (MapGenerator.map[i, j].Name == "Torch" || MapGenerator.map[i, j].Name == "Torch_unpowered")
-                {
-                    MapGenerator.map[i, j] = tileList[1];
-                    placedTorches.Remove(new Point(i, j));
-                    Bluestone.UpdateTorches();
-                    Bluestone.UpdateBluestone();
+                    case "Bluestone":
+                    case "Bluestone_powered":
+                        MapGenerator.map[i, j] = tileList[1];
+                        Bluestone.placedBluestone.Remove(new Point(i, j));
+                        Bluestone.UpdateBluestone();
+                        break;
+                    case "Torch":
+                    case "Torch_unpowered":
+                        MapGenerator.map[i, j] = tileList[1];
+                        Bluestone.placedTorches.Remove(new Point(i, j));
+                        Bluestone.UpdateTorches();
+                        Bluestone.UpdateBluestone();
+                        break;
+                    case "Delayer":
+                        Bluestone.placedDelayers.Remove(new Point(i, j));
+                        break;
+                    default:
+                        break;
                 }
                 MapGenerator.map[i, j] = tileList[1];
                 Form.ActiveForm.Invalidate();

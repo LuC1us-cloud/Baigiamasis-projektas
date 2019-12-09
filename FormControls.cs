@@ -63,7 +63,6 @@ namespace movable_2dmap
             }
         }
 
-        static int amountOfTiles = 4;
         public static int scrollTolerance = 20;
         public static int selectedID = 0;
 
@@ -75,7 +74,7 @@ namespace movable_2dmap
         public static void TileSelection(object sender, MouseEventArgs e)
         {
             selectedID++;
-            if (selectedID == amountOfTiles * scrollTolerance)
+            if (selectedID == MapTile.tileList.Count * scrollTolerance)
             {
                 selectedID = 0;
             }

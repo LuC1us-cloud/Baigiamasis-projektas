@@ -30,6 +30,8 @@ namespace movable_2dmap
         {
             //Fills the map with tiles
             MapGenerator.fillMap();
+            timer1.Interval = 5000;
+            timer1.Start();
         }
 
         private void Form1_Paint(object sender, PaintEventArgs e)
@@ -50,6 +52,12 @@ namespace movable_2dmap
             {
                 MapTile.ProcessTileChange(mouse);
             }
+        }
+
+        private void Timer1_Tick(object sender, EventArgs e)
+        {
+            Bluestone.UpdateDelayers();
+            Bluestone.UpdateBluestone();
         }
     }
 }
