@@ -49,7 +49,7 @@ namespace movable_2dmap
                         break;
                     case 4:
                         Bluestone.placedDelayers.Add(new Point(i, j));
-                        Bluestone.DetermineDirection(new Point(i, j));
+                        Bluestone.DetermineDelayerDirection(new Point(i, j));
                         break;
                     default:
                         break;
@@ -75,6 +75,14 @@ namespace movable_2dmap
                         Bluestone.UpdateBluestone();
                         break;
                     case "Delayer":
+                    case "Delayer_bottom":
+                    case "Delayer_left":
+                    case "Delayer_top":
+                    case "Delayer_right":
+                    case "Delayer_bottom_unpowered":
+                    case "Delayer_left_unpowered":
+                    case "Delayer_top_unpowered":
+                    case "Delayer_right_unpowered":
                         Bluestone.placedDelayers.Remove(new Point(i, j));
                         break;
                     default:

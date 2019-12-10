@@ -57,7 +57,7 @@ namespace movable_2dmap
         private void Timer1_Tick(object sender, EventArgs e)
         {
             Bluestone.UpdateDelayers();
-            Bluestone.UpdateBluestone();
+            Invalidate();
         }
     }
 }
