@@ -30,7 +30,7 @@ namespace movable_2dmap
         {
             //Fills the map with tiles
             MapGenerator.fillMap();
-            timer1.Interval = 5000;
+            timer1.Interval = 1000;
             timer1.Start();
         }
 
@@ -57,6 +57,7 @@ namespace movable_2dmap
         private void Timer1_Tick(object sender, EventArgs e)
         {
             Bluestone.UpdateDelayers();
+            Bluestone.UpdateBluestone();
             Invalidate();
         }
     }
