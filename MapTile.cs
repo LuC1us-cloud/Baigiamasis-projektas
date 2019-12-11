@@ -24,7 +24,8 @@ namespace movable_2dmap
             new MapTile("Grass", 1, null, Color.GreenYellow),
             new MapTile("Bluestone", 2, null, Color.DarkBlue),
             new MapTile("Torch", 3, null, Color.Magenta),
-            new MapTile("Delayer", 4, null, Color.Gray)
+            new MapTile("Delayer", 4, null, Color.Gray),
+            new MapTile("AND_gate", 5, null, Color.Pink)
         };
 
         /// <summary>
@@ -35,7 +36,7 @@ namespace movable_2dmap
         public static void ProcessTileChange(MouseEventArgs e)
         {
             int i = (e.X + MapGenerator.mapOffset) / MapGenerator.sizeOfTile - 1 + FormControls.startingPointX, j = (e.Y + MapGenerator.mapOffset) / MapGenerator.sizeOfTile - 1 + FormControls.startingPointY;
-            if ((Form1.keyHeld == Keys.D || e.Button == MouseButtons.Left) && MapGenerator.map[i, j].ID == 1)
+            if (Form1.keyHeld == Keys.D && MapGenerator.map[i, j].ID == 1)
             {
                 MapGenerator.map[i, j] = tileList[FormControls.selectedID / FormControls.scrollTolerance];
                 switch (FormControls.selectedID / FormControls.scrollTolerance)
@@ -51,10 +52,14 @@ namespace movable_2dmap
                         Bluestone.placedDelayers.Add(new Point(i, j));
                         Bluestone.DetermineDelayerDirection(new Point(i, j));
                         break;
+                    case 5:
+                        Bluestone.placedANDgates.Add(new Point(i, j));
+                        break;
                     default:
                         break;
                 }
                 Bluestone.UpdateBluestone();
+                Bluestone.UpdateGates();
                 Form.ActiveForm.Invalidate();
             }
             else if (e.Button == MouseButtons.Right)
@@ -72,6 +77,7 @@ namespace movable_2dmap
                         MapGenerator.map[i, j] = tileList[1];
                         Bluestone.placedTorches.Remove(new Point(i, j));
                         Bluestone.UpdateTorches();
+                        Bluestone.UpdateGates();
                         Bluestone.UpdateBluestone();
                         break;
                     case "Delayer":
@@ -84,6 +90,11 @@ namespace movable_2dmap
                     case "Delayer_top_unpowered":
                     case "Delayer_right_unpowered":
                         Bluestone.placedDelayers.Remove(new Point(i, j));
+                        break;
+                    case "AND_gate":
+                    case "AND_gate_powered":
+                        Bluestone.placedANDgates.Remove(new Point(i, j));
+                        Bluestone.UpdateBluestone();
                         break;
                     default:
                         break;

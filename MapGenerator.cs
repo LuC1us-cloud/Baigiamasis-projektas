@@ -15,6 +15,9 @@ namespace movable_2dmap
         static int visibleMapSizeHorizontal = 20;
         static int visibleMapSizeVertical = 20;
 
+        /// <summary>
+        /// Fills the map with tiles.
+        /// </summary>
         public static void FillMap()
         {
             // Possible Tiles: Grass,  Gravel, Tree, Stone, High stone (mountain), <(Technical tiles)>.
@@ -47,9 +50,10 @@ namespace movable_2dmap
                 GenerateCircularBiomes(item, 4);
             }
         }
+
         public static void GenerateCircularBiomes(Biome biome, int sizeRadius)
         {
-            for (double x = -sizeRadius; x <= sizeRadius; x=x+0.1)
+            for (double x = -sizeRadius; x <= sizeRadius; x += 0.1)
             {
                 if (true)
                 {
@@ -64,6 +68,14 @@ namespace movable_2dmap
                 }
             }
         }
+
+        /// <summary>
+        /// Draws the map and grid
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// <param name="startingPointX"></param>
+        /// <param name="startingPointY"></param>
         public static void DrawMapAndGrid(object sender, PaintEventArgs e, int startingPointX, int startingPointY)
         {
             for (int x = startingPointX; x < startingPointX + visibleMapSizeHorizontal; x++)

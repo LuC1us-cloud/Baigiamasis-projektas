@@ -5,9 +5,12 @@ namespace movable_2dmap
 {
     class Bluestone
     {
+        //public List<string> directions { get; set; }
+
         public static List<Point> placedBluestone = new List<Point>();
         public static List<Point> placedTorches = new List<Point>();
         public static List<Point> placedDelayers = new List<Point>();
+        public static List<Point> placedANDgates = new List<Point>();
 
         /// <summary>
         /// Checks in four directions if there is a tile with power and returns true if found, returns false otherwise.
@@ -53,28 +56,51 @@ namespace movable_2dmap
         /// <summary>
         /// Returns the direction relative to another object.
         /// </summary>
-        /// <param name="objectOfInterest">Object's location that you want to find.</param>
-        /// <param name="comparison">The object that you are comparing with.</param>
+        /// <param name="tileLocation">Object's location that you want to find.</param>
+        /// <param name="comparisonTileLocation">The object that you are comparing with.</param>
         /// <returns></returns>
-        static string FindDirectionalRelation(Point objectOfInterest, Point comparison)
+        static List<string> FindDirectionalRelation(Point tileLocation, Point comparisonTileLocation)
         {
-            if (objectOfInterest == new Point(comparison.X, comparison.Y - 1))
+            List<string> directions = new List<string>();
+            if (tileLocation.Y != 0 && tileLocation == new Point(comparisonTileLocation.X, comparisonTileLocation.Y - 1))
             {
-                return "top";
+                directions.Add("top");
             }
-            else if (objectOfInterest == new Point(comparison.X + 1, comparison.Y))
+            if (tileLocation.X != MapGenerator.sizeOfArray - 1 && tileLocation == new Point(comparisonTileLocation.X + 1, comparisonTileLocation.Y))
             {
-                return "right";
+                directions.Add("right");
             }
-            else if (objectOfInterest == new Point(comparison.X, comparison.Y + 1))
+            if (tileLocation.Y != MapGenerator.sizeOfArray - 1 && tileLocation == new Point(comparisonTileLocation.X, comparisonTileLocation.Y + 1))
             {
-                return "bottom";
+                directions.Add("bottom");
             }
-            else if (objectOfInterest == new Point(comparison.X - 1, comparison.Y))
+            if (tileLocation.X != 0 && tileLocation == new Point(comparisonTileLocation.X - 1, comparisonTileLocation.Y))
             {
-                return "left";
+                directions.Add("left");
             }
-            return "null";
+            return directions;
+        }
+
+        static int InputCount(Point tileLocation, List<string> conditions)
+        {
+            int counter = 0;
+            if (tileLocation.Y != 0 && conditions.Contains(MapGenerator.map[tileLocation.X, tileLocation.Y - 1].Name))
+            {
+                counter++;
+            }
+            if (tileLocation.X != MapGenerator.sizeOfArray - 1 && conditions.Contains(MapGenerator.map[tileLocation.X + 1, tileLocation.Y].Name))
+            {
+                counter++;
+            }
+            if (tileLocation.Y != MapGenerator.sizeOfArray - 1 && conditions.Contains(MapGenerator.map[tileLocation.X, tileLocation.Y + 1].Name))
+            {
+                counter++;
+            }
+            if (tileLocation.X != 0 && conditions.Contains(MapGenerator.map[tileLocation.X - 1, tileLocation.Y].Name))
+            {
+                counter++;
+            }
+            return counter;
         }
 
         /// <summary>
@@ -85,12 +111,12 @@ namespace movable_2dmap
             UnpowerBluestone();
             for (int i = 0; i < placedBluestone.Count; i++)
             {
-                if (MapGenerator.map[placedBluestone[i].X, placedBluestone[i].Y].Name != "Bluestone_powered" && PowerCheck(placedBluestone[i], new string[] { "Torch", "Bluestone_powered", "Delayer_bottom", "Delayer_left", "Delayer_top", "Delayer_right" }, "any"))
+                if (MapGenerator.map[placedBluestone[i].X, placedBluestone[i].Y].Name != "Bluestone_powered" && PowerCheck(placedBluestone[i], new string[] { "Torch", "Bluestone_powered", "Delayer_bottom", "Delayer_left", "Delayer_top", "Delayer_right", "AND_gate_powered" }, "any"))
                 {
                     MapGenerator.map[placedBluestone[i].X, placedBluestone[i].Y] = new MapTile("Bluestone_powered", 2, null, Color.Blue);
                     i = 0;
                 }
-                if (placedBluestone.Count > 0 && PowerCheck(placedBluestone[0], new string[] { "Torch", "Bluestone_powered" }, "any"))
+                if (placedBluestone.Count > 0 && PowerCheck(placedBluestone[0], new string[] { "Torch", "Bluestone_powered", "Delayer_bottom", "Delayer_left", "Delayer_top", "Delayer_right", "AND_gate_powered" }, "any"))
                 {
                     MapGenerator.map[placedBluestone[0].X, placedBluestone[0].Y] = new MapTile("Bluestone_powered", 2, null, Color.Blue);
                 }
@@ -213,6 +239,26 @@ namespace movable_2dmap
                 if (MapGenerator.map[delayer.X, delayer.Y].Name == "Delayer_bottom" || MapGenerator.map[delayer.X, delayer.Y].Name == "Delayer_left" || MapGenerator.map[delayer.X, delayer.Y].Name == "Delayer_top" || MapGenerator.map[delayer.X, delayer.Y].Name == "Delayer_right")
                 {
                     MapGenerator.map[delayer.X, delayer.Y] = new MapTile(MapGenerator.map[delayer.X, delayer.Y].Name + "_unpowered", 4, null, Color.Gray);
+                }
+            }
+        }
+
+        static void UnpowerGates()
+        {
+            foreach (var gate in placedANDgates)
+            {
+                MapGenerator.map[gate.X, gate.Y] = MapTile.tileList[5];
+            }
+        }
+
+        public static void UpdateGates()
+        {
+            UnpowerGates();
+            foreach (var gate in placedANDgates)
+            {
+                if (InputCount(gate, new List<string> { "Torch" }) == 2)
+                {
+                    MapGenerator.map[gate.X, gate.Y] = new MapTile("AND_gate_powered", 5, null, Color.Red);
                 }
             }
         }

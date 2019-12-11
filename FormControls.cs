@@ -8,6 +8,12 @@ namespace movable_2dmap
         public static Point mouseDragStart;
         public static int startingPointX = 50;
         public static int startingPointY = 50;
+
+        /// <summary>
+        /// Moves the visible map window.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public static void MoveVisibleMap(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
