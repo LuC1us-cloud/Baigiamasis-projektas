@@ -32,6 +32,7 @@ namespace movable_2dmap
             MapGenerator.FillMap();
             timer1.Interval = 1000;
             timer1.Start();
+            
         }
 
         private void Form1_Paint(object sender, PaintEventArgs e)
@@ -59,6 +60,24 @@ namespace movable_2dmap
             Bluestone.UpdateDelayers();
             Bluestone.UpdateBluestone();
             Invalidate();
+        }
+        //Save file button
+        private void button1_Click(object sender, EventArgs e)
+        {
+            //Calls the save file method and pops up the directory dialog
+            LoadAndSaveFile.SaveFile();
+            saveFileDialog1.ShowDialog();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            //Fixes flickering
+            this.SetStyle(
+                ControlStyles.AllPaintingInWmPaint |
+                ControlStyles.UserPaint |
+                ControlStyles.DoubleBuffer,
+                true);
+            this.UpdateStyles();
         }
     }
 }

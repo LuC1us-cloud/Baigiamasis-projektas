@@ -8,25 +8,27 @@ namespace movable_2dmap
     {
         public string Name { get; }
         public int ID { get; }
-        public Image Image { get; }
         public Color AltColor { get; set; } //Alternative color, if Image file doesn't exist
         //MetaData metaData { get; }
-        public MapTile(string name, int id, Image image, Color color)
+        public MapTile(string name, int id, Color color)
         {
             Name = name;
             ID = id;
-            Image = image;
             AltColor = color;
         }
 
         public static List<MapTile> tileList = new List<MapTile>{
-            new MapTile("Null", 0, null, Color.White),
-            new MapTile("Grass", 1, null, Color.GreenYellow),
-            new MapTile("Bluestone", 2, null, Color.DarkBlue),
-            new MapTile("Torch", 3, null, Color.Magenta),
-            new MapTile("Delayer", 4, null, Color.Gray)
+            new MapTile("Null", 0, Color.White),
+            new MapTile("Grass", 1, Color.GreenYellow),
+            new MapTile("Bluestone", 2, Color.DarkBlue),
+            new MapTile("Torch", 3, Color.Magenta),
+            new MapTile("Delayer", 4, Color.Gray)
         };
-
+        public  override string ToString()
+        {
+            string temp = Name + " " + ID.ToString() + " " + AltColor.ToArgb();
+            return temp;
+        }
         /// <summary>
         /// Removes or adds a tile on the map depending on mouse button pressed. Left mouse button press adds a tile, while a right 
         /// mouse button press removes a tile from the map.

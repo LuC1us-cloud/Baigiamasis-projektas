@@ -87,12 +87,12 @@ namespace movable_2dmap
             {
                 if (MapGenerator.map[placedBluestone[i].X, placedBluestone[i].Y].Name != "Bluestone_powered" && PowerCheck(placedBluestone[i], new string[] { "Torch", "Bluestone_powered", "Delayer_bottom", "Delayer_left", "Delayer_top", "Delayer_right" }, "any"))
                 {
-                    MapGenerator.map[placedBluestone[i].X, placedBluestone[i].Y] = new MapTile("Bluestone_powered", 2, null, Color.Blue);
+                    MapGenerator.map[placedBluestone[i].X, placedBluestone[i].Y] = new MapTile("Bluestone_powered", 2, Color.Blue);
                     i = 0;
                 }
                 if (placedBluestone.Count > 0 && PowerCheck(placedBluestone[0], new string[] { "Torch", "Bluestone_powered" }, "any"))
                 {
-                    MapGenerator.map[placedBluestone[0].X, placedBluestone[0].Y] = new MapTile("Bluestone_powered", 2, null, Color.Blue);
+                    MapGenerator.map[placedBluestone[0].X, placedBluestone[0].Y] = new MapTile("Bluestone_powered", 2, Color.Blue);
                 }
             }
         }
@@ -118,23 +118,23 @@ namespace movable_2dmap
             {
                 if (PowerCheck(torch, new string[] { "Torch" }, "top"))
                 {
-                    MapGenerator.map[torch.X, torch.Y] = new MapTile("Torch_unpowered", 3, null, Color.DarkMagenta);
-                    MapGenerator.map[torch.X, torch.Y - 1] = new MapTile("Torch_unpowered", 3, null, Color.DarkMagenta);
+                    MapGenerator.map[torch.X, torch.Y] = new MapTile("Torch_unpowered", 3, Color.DarkMagenta);
+                    MapGenerator.map[torch.X, torch.Y - 1] = new MapTile("Torch_unpowered", 3, Color.DarkMagenta);
                 }
                 if (PowerCheck(torch, new string[] { "Torch" }, "right"))
                 {
-                    MapGenerator.map[torch.X, torch.Y] = new MapTile("Torch_unpowered", 3, null, Color.DarkMagenta);
-                    MapGenerator.map[torch.X + 1, torch.Y] = new MapTile("Torch_unpowered", 3, null, Color.DarkMagenta);
+                    MapGenerator.map[torch.X, torch.Y] = new MapTile("Torch_unpowered", 3, Color.DarkMagenta);
+                    MapGenerator.map[torch.X + 1, torch.Y] = new MapTile("Torch_unpowered", 3, Color.DarkMagenta);
                 }
                 if (PowerCheck(torch, new string[] { "Torch" }, "bottom"))
                 {
-                    MapGenerator.map[torch.X, torch.Y] = new MapTile("Torch_unpowered", 3, null, Color.DarkMagenta);
-                    MapGenerator.map[torch.X, torch.Y + 1] = new MapTile("Torch_unpowered", 3, null, Color.DarkMagenta);
+                    MapGenerator.map[torch.X, torch.Y] = new MapTile("Torch_unpowered", 3, Color.DarkMagenta);
+                    MapGenerator.map[torch.X, torch.Y + 1] = new MapTile("Torch_unpowered", 3, Color.DarkMagenta);
                 }
                 if (PowerCheck(torch, new string[] { "Torch" }, "left"))
                 {
-                    MapGenerator.map[torch.X, torch.Y] = new MapTile("Torch_unpowered", 3, null, Color.DarkMagenta);
-                    MapGenerator.map[torch.X - 1, torch.Y] = new MapTile("Torch_unpowered", 3, null, Color.DarkMagenta);
+                    MapGenerator.map[torch.X, torch.Y] = new MapTile("Torch_unpowered", 3, Color.DarkMagenta);
+                    MapGenerator.map[torch.X - 1, torch.Y] = new MapTile("Torch_unpowered", 3, Color.DarkMagenta);
                 }
             }
         }
@@ -160,19 +160,19 @@ namespace movable_2dmap
         {
             if (PowerCheck(tileLocation, new string[] { "Torch", "Bluestone_powered"}, "top"))
             {
-                MapGenerator.map[tileLocation.X, tileLocation.Y] = new MapTile("Delayer_bottom", 4, null, Color.LightCyan);
+                MapGenerator.map[tileLocation.X, tileLocation.Y] = new MapTile("Delayer_bottom", 4, Color.LightCyan);
             }
             else if (PowerCheck(tileLocation, new string[] { "Torch", "Bluestone_powered" }, "right"))
             {
-                MapGenerator.map[tileLocation.X, tileLocation.Y] = new MapTile("Delayer_left", 4, null, Color.LightCyan);
+                MapGenerator.map[tileLocation.X, tileLocation.Y] = new MapTile("Delayer_left", 4, Color.LightCyan);
             }
             else if (PowerCheck(tileLocation, new string[] { "Torch", "Bluestone_powered" }, "bottom"))
             {
-                MapGenerator.map[tileLocation.X, tileLocation.Y] = new MapTile("Delayer_top", 4, null, Color.LightCyan);
+                MapGenerator.map[tileLocation.X, tileLocation.Y] = new MapTile("Delayer_top", 4, Color.LightCyan);
             }
             else if (PowerCheck(tileLocation, new string[] { "Torch", "Bluestone_powered" }, "left"))
             {
-                MapGenerator.map[tileLocation.X, tileLocation.Y] = new MapTile("Delayer_right", 4, null, Color.LightCyan);
+                MapGenerator.map[tileLocation.X, tileLocation.Y] = new MapTile("Delayer_right", 4, Color.LightCyan);
             }
         }
 
@@ -186,19 +186,19 @@ namespace movable_2dmap
             {
                 if (MapGenerator.map[delayer.X, delayer.Y].Name == "Delayer_bottom_unpowered" && PowerCheck(delayer, new string[] { "Torch", "Bluestone_powered" }, "top"))
                 {
-                    MapGenerator.map[delayer.X, delayer.Y] = new MapTile("Delayer_bottom", 4, null, Color.LightCyan);
+                    MapGenerator.map[delayer.X, delayer.Y] = new MapTile("Delayer_bottom", 4, Color.LightCyan);
                 }
                 else if (MapGenerator.map[delayer.X, delayer.Y].Name == "Delayer_left_unpowered" && PowerCheck(delayer, new string[] { "Torch", "Bluestone_powered" }, "right"))
                 {
-                    MapGenerator.map[delayer.X, delayer.Y] = new MapTile("Delayer_left", 4, null, Color.LightCyan);
+                    MapGenerator.map[delayer.X, delayer.Y] = new MapTile("Delayer_left", 4,  Color.LightCyan);
                 }
                 else if (MapGenerator.map[delayer.X, delayer.Y].Name == "Delayer_top_unpowered" && PowerCheck(delayer, new string[] { "Torch", "Bluestone_powered" }, "bottom"))
                 {
-                    MapGenerator.map[delayer.X, delayer.Y] = new MapTile("Delayer_top", 4, null, Color.LightCyan);
+                    MapGenerator.map[delayer.X, delayer.Y] = new MapTile("Delayer_top", 4,  Color.LightCyan);
                 }
                 else if (MapGenerator.map[delayer.X, delayer.Y].Name == "Delayer_right_unpowered" && PowerCheck(delayer, new string[] { "Torch", "Bluestone_powered" }, "left"))
                 {
-                    MapGenerator.map[delayer.X, delayer.Y] = new MapTile("Delayer_right", 4, null, Color.LightCyan);
+                    MapGenerator.map[delayer.X, delayer.Y] = new MapTile("Delayer_right", 4,  Color.LightCyan);
                 }
             }
         }
@@ -212,7 +212,7 @@ namespace movable_2dmap
             {
                 if (MapGenerator.map[delayer.X, delayer.Y].Name == "Delayer_bottom" || MapGenerator.map[delayer.X, delayer.Y].Name == "Delayer_left" || MapGenerator.map[delayer.X, delayer.Y].Name == "Delayer_top" || MapGenerator.map[delayer.X, delayer.Y].Name == "Delayer_right")
                 {
-                    MapGenerator.map[delayer.X, delayer.Y] = new MapTile(MapGenerator.map[delayer.X, delayer.Y].Name + "_unpowered", 4, null, Color.Gray);
+                    MapGenerator.map[delayer.X, delayer.Y] = new MapTile(MapGenerator.map[delayer.X, delayer.Y].Name + "_unpowered", 4,  Color.Gray);
                 }
             }
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 
 namespace movable_2dmap
@@ -17,6 +18,21 @@ namespace movable_2dmap
 
         public static void FillMap()
         {
+            if (File.Exists(@"demo.txt"))
+            {
+                FillMapFromFile();
+            }
+            else
+            {
+                FillMapFirstTime();
+            }
+        }
+        public static void FillMapFromFile()
+        {
+
+        }
+        public static void FillMapFirstTime()
+        {
             // Possible Tiles: Grass,  Gravel, Tree, Stone, High stone (mountain), <(Technical tiles)>.
             Random random = new Random();
             int ForestPatchAmount = random.Next(sizeOfArray / 30 - 1, sizeOfArray / 30 + 1);
@@ -26,7 +42,7 @@ namespace movable_2dmap
             {
                 for (int y = 0; y < sizeOfArray; y++)
                 {
-                    map[x, y] = new MapTile("Grass", 1, null, Color.GreenYellow); // temp
+                    map[x, y] = new MapTile("Grass", 1,  Color.GreenYellow); // temp
                 }
             }
             //Generates Forests and their center points are saved (will be)
@@ -46,6 +62,8 @@ namespace movable_2dmap
                 map[item.Location.X, item.Location.Y].AltColor = Color.Black;
                 GenerateCircularBiomes(item, 10);
             }
+            Console.WriteLine(map[0,0].ToString());
+            Console.WriteLine(map[0, 1].ToString());
         }
         public static void GenerateCircularBiomes(Biome biome, int sizeRadius)
         {
@@ -74,8 +92,8 @@ namespace movable_2dmap
             }
             for (int x = 0; x <= visibleMapSizeHorizontal; x++)
             {
-                e.Graphics.DrawLine(new Pen(Color.Black), new Point(mapOffset + x * sizeOfTile, mapOffset), new Point(mapOffset + x * sizeOfTile, sizeOfTile * visibleMapSizeVertical + mapOffset));
-                e.Graphics.DrawLine(new Pen(Color.Black), new Point(mapOffset, mapOffset + x * sizeOfTile), new Point(sizeOfTile * visibleMapSizeHorizontal + mapOffset, mapOffset + x * sizeOfTile));
+                e.Graphics.DrawLine(new Pen(Color.FromArgb(50,0,0,0)), new Point(mapOffset + x * sizeOfTile, mapOffset), new Point(mapOffset + x * sizeOfTile, sizeOfTile * visibleMapSizeVertical + mapOffset));
+                e.Graphics.DrawLine(new Pen(Color.FromArgb(50, 0, 0, 0)), new Point(mapOffset, mapOffset + x * sizeOfTile), new Point(sizeOfTile * visibleMapSizeHorizontal + mapOffset, mapOffset + x * sizeOfTile));
             }
         }
     }

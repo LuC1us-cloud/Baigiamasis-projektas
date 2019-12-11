@@ -55,6 +55,7 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="FormControls.cs" />
+    <Compile Include="LoadAndSaveFile.cs" />
     <Compile Include="MapGenerator.cs" />
     <Compile Include="MapTile.cs" />
     <Compile Include="Program.cs" />
