@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Windows.Forms;
 
 namespace movable_2dmap
@@ -65,7 +66,6 @@ namespace movable_2dmap
         private void button1_Click(object sender, EventArgs e)
         {
             //Calls the save file method and pops up the directory dialog
-            LoadAndSaveFile.SaveFile();
             saveFileDialog1.ShowDialog();
         }
 
@@ -78,6 +78,12 @@ namespace movable_2dmap
                 ControlStyles.DoubleBuffer,
                 true);
             this.UpdateStyles();
+        }
+
+        private void saveFileDialog1_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            //Saves the file at the specified location
+            LoadAndSaveFile.SaveFile(Path.GetFullPath(saveFileDialog1.FileName), Path.GetFileName(saveFileDialog1.FileName));
         }
     }
 }

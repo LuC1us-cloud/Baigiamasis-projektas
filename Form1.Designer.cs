@@ -40,12 +40,13 @@
             // 
             // saveFileDialog1
             // 
-            this.saveFileDialog1.CheckFileExists = true;
             this.saveFileDialog1.DefaultExt = "txt";
             this.saveFileDialog1.FileName = "demo.txt";
             this.saveFileDialog1.Filter = "\"Text files (*.txt)|*.txt\"";
             this.saveFileDialog1.InitialDirectory = "C:\\Users\\User\\source\\repos";
+            this.saveFileDialog1.RestoreDirectory = true;
             this.saveFileDialog1.Title = "Save file to...";
+            this.saveFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.saveFileDialog1_FileOk);
             // 
             // button1
             // 
