@@ -83,7 +83,7 @@ namespace movable_2dmap
         private void saveFileDialog1_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
         {
             //Saves the file at the specified location
-            LoadAndSaveFile.SaveFile(Path.GetFullPath(saveFileDialog1.FileName), Path.GetFileName(saveFileDialog1.FileName));
+            SaveFile.SaveFileToTxt(Path.GetFullPath(saveFileDialog1.FileName), Path.GetFileName(saveFileDialog1.FileName));
         }
     }
 }

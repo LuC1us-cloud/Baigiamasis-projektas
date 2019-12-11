@@ -29,7 +29,27 @@ namespace movable_2dmap
         }
         public static void FillMapFromFile()
         {
-
+            string name;
+            int id;
+            int color;
+            string temp = "";
+            string[] vs;
+            using (StreamReader sr = File.OpenText(@"demo.txt"))
+            {
+                for (int x = 0; x < sizeOfArray; x++)
+                {
+                    for (int y = 0; y < sizeOfArray; y++)
+                    {
+                        temp = sr.ReadLine();
+                        vs = temp.Split();
+                        name = vs[0];
+                        id = Convert.ToInt32(vs[1]);
+                        color = Convert.ToInt32(vs[2]);
+                        Console.WriteLine(name + " " + id + " " + color);
+                        map[x, y] = new MapTile(name, id, Color.FromArgb(color));
+                    }
+                }
+            }
         }
         public static void FillMapFirstTime()
         {

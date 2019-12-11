@@ -7,9 +7,9 @@ using System.IO;
 
 namespace movable_2dmap
 {
-    public static class LoadAndSaveFile
+    public static class SaveFile
     {
-        public static void SaveFile(string path, string name)
+        public static void SaveFileToTxt(string path, string name)
         {
             using (StreamWriter streamWriter = File.CreateText(path))
             foreach(var b in MapGenerator.map)
