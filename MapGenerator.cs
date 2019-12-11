@@ -19,7 +19,7 @@ namespace movable_2dmap
         {
             // Possible Tiles: Grass,  Gravel, Tree, Stone, High stone (mountain), <(Technical tiles)>.
             Random random = new Random();
-            int ForestPatchAmount = random.Next(SizeOfArray / 30 - 1, SizeOfArray / 30 + 1);
+            int ForestPatchAmount = random.Next(sizeOfArray / 30 - 1, sizeOfArray / 30 + 1);
             //int GravelPatchAmount = random.Next(SizeOfArray / );
             //fills map with grass
             for (int x = 0; x < sizeOfArray; x++)
