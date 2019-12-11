@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 using System.Windows.Forms;
 
 namespace movable_2dmap
@@ -19,8 +14,8 @@ namespace movable_2dmap
             {
                 int moverX;
                 int moverY;
-                moverX = (e.X - mouseDragStart.X) / 20;
-                moverY = (e.Y - mouseDragStart.Y) / 20;
+                moverX = (e.X - mouseDragStart.X) / MapGenerator.sizeOfTile;
+                moverY = (e.Y - mouseDragStart.Y) / MapGenerator.sizeOfTile;
                 if (moverX != 0)
                 {
                     if (moverX > 0)
@@ -29,19 +24,19 @@ namespace movable_2dmap
                         if (startingPointX > 0)
                         {
                             startingPointX--;
-                            Form1.ActiveForm.Invalidate();
+                            Form.ActiveForm.Invalidate();
                         }
                     }
                     else
                     {
                         moverX = -1;
-                        if (startingPointX < 90)
+                        if (startingPointX < MapGenerator.sizeOfArray - MapGenerator.sizeOfTile)
                         {
                             startingPointX++;
-                            Form1.ActiveForm.Invalidate();
+                            Form.ActiveForm.Invalidate();
                         }
                     }
-                    mouseDragStart.X += moverX * 20;
+                    mouseDragStart.X += moverX * MapGenerator.sizeOfTile;
                 }
                 if (moverY != 0)
                 {
@@ -51,21 +46,39 @@ namespace movable_2dmap
                         if (startingPointY > 0)
                         {
                             startingPointY--;
-                            Form1.ActiveForm.Invalidate();
+                            Form.ActiveForm.Invalidate();
                         }
                     }
                     else
                     {
                         moverY = -1;
-                        if (startingPointY < 90)
+                        if (startingPointY < MapGenerator.sizeOfArray - MapGenerator.sizeOfTile)
                         {
                             startingPointY++;
-                            Form1.ActiveForm.Invalidate();
+                            Form.ActiveForm.Invalidate();
                         }
                     }
-                    mouseDragStart.Y += moverY * 20;
+                    mouseDragStart.Y += moverY * MapGenerator.sizeOfTile;
                 }
             }
+        }
+
+        public static int scrollTolerance = 20;
+        public static int selectedID = 0;
+
+        /// <summary>
+        /// Changes selected tile ID based on a counter which is triggered every scroll event.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public static void TileSelection(object sender, MouseEventArgs e)
+        {
+            selectedID++;
+            if (selectedID == MapTile.tileList.Count * scrollTolerance)
+            {
+                selectedID = 0;
+            }
+            //draw selection UI
         }
     }
 }

@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace movable_2dmap
 {
     public static class MapGenerator
     {
-        static int SizeOfArray = 110;
-        static MapTile[,] map = new MapTile[SizeOfArray, SizeOfArray];
+        public static int sizeOfArray = 110;
+        public static int sizeOfTile = 20;
+        public static int mapOffset = 10;
+        public static MapTile[,] map = new MapTile[sizeOfArray, sizeOfArray];
         static List<Biome> biomes = new List<Biome>();
         static int visibleMapSizeHorizontal = 20;
         static int visibleMapSizeVertical = 20;
@@ -23,9 +22,9 @@ namespace movable_2dmap
             int ForestPatchAmount = random.Next(SizeOfArray / 30 - 1, SizeOfArray / 30 + 1);
             //int GravelPatchAmount = random.Next(SizeOfArray / );
             //fills map with grass
-            for (int x = 0; x < 110; x++)
+            for (int x = 0; x < sizeOfArray; x++)
             {
-                for (int y = 0; y < 110; y++)
+                for (int y = 0; y < sizeOfArray; y++)
                 {
                     map[x, y] = new MapTile("Grass", 1, null, Color.GreenYellow); // temp
                 }
@@ -33,7 +32,7 @@ namespace movable_2dmap
             //Generates Forests and their center points are saved (will be)
             for (int forest = 0; forest < ForestPatchAmount; forest++)
             {
-                biomes.Add(new Biome("Forest", new Point(random.Next(0, 110), random.Next(0, 110))));
+                biomes.Add(new Biome("Forest", new Point(random.Next(0, sizeOfArray), random.Next(0, sizeOfArray))));
             }
             //Generates gravel pathches 
             //for (int gravel = 0; gravel < GravelPatchAmount; gravel++)
@@ -71,13 +70,13 @@ namespace movable_2dmap
             {
                 for (int y = startingPointY; y < startingPointY + visibleMapSizeVertical; y++)
                 {
-                    e.Graphics.FillRectangle(new SolidBrush(map[x, y].AltColor), new Rectangle(new Point(10 + (x - startingPointX) * 20, 10 + (y - startingPointY) * 20), new Size(20, 20)));
+                    e.Graphics.FillRectangle(new SolidBrush(map[x, y].AltColor), new Rectangle(new Point(mapOffset + (x - startingPointX) * sizeOfTile, mapOffset + (y - startingPointY) * sizeOfTile), new Size(sizeOfTile, sizeOfTile)));
                 }
             }
             for (int x = 0; x <= visibleMapSizeHorizontal; x++)
             {
-                e.Graphics.DrawLine(new Pen(Color.Black), new Point(10 + x * 20, 10), new Point(10 + x * 20, 410));
-                e.Graphics.DrawLine(new Pen(Color.Black), new Point(10, 10 + x * 20), new Point(410, 10 + x * 20));
+                e.Graphics.DrawLine(new Pen(Color.Black), new Point(mapOffset + x * sizeOfTile, mapOffset), new Point(mapOffset + x * sizeOfTile, sizeOfTile * visibleMapSizeVertical + mapOffset));
+                e.Graphics.DrawLine(new Pen(Color.Black), new Point(mapOffset, mapOffset + x * sizeOfTile), new Point(sizeOfTile * visibleMapSizeHorizontal + mapOffset, mapOffset + x * sizeOfTile));
             }
         }
     }
