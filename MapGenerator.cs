@@ -37,30 +37,29 @@ namespace movable_2dmap
             //Generates gravel pathches 
             //for (int gravel = 0; gravel < GravelPatchAmount; gravel++)
             {
-
+                
             }
             //Prints names and locations of all special biomes on map
             foreach (var item in biomes)
             {
                 Console.WriteLine(item.Name + " at: " + item.Location);
                 map[item.Location.X, item.Location.Y].AltColor = Color.Black;
-                GenerateCircularBiomes(item, 4);
+                GenerateCircularBiomes(item, 10);
             }
         }
         public static void GenerateCircularBiomes(Biome biome, int sizeRadius)
         {
             for (double x = -sizeRadius; x <= sizeRadius; x=x+0.1)
             {
-                if (true)
+                if (Convert.ToInt32((x + biome.Location.X)) >= 0 && Convert.ToInt32((x + biome.Location.X)) < sizeOfArray && Convert.ToInt32((Math.Sqrt(Math.Abs(x * x - sizeRadius * sizeRadius)))) + biome.Location.Y >= 0 && Convert.ToInt32((Math.Sqrt(Math.Abs(x * x - sizeRadius * sizeRadius)))) + biome.Location.Y < sizeOfArray)
                 {
                     map[Convert.ToInt32((x + biome.Location.X)), Convert.ToInt32((Math.Sqrt(Math.Abs(x * x - sizeRadius * sizeRadius)))) + biome.Location.Y].AltColor = Color.Red;
                     Console.WriteLine(Convert.ToInt32((x + biome.Location.X)) + " " + Convert.ToInt16((Math.Sqrt(Math.Abs(x * x - sizeRadius * sizeRadius)))) + biome.Location.Y);
                 }
-                if (true)
+                if (Convert.ToInt32((x + biome.Location.X)) >= 0 && Convert.ToInt32((x + biome.Location.X)) < sizeOfArray && -Convert.ToInt32((Math.Sqrt(Math.Abs(x * x - sizeRadius * sizeRadius)))) + biome.Location.Y >= 0 && -Convert.ToInt32((Math.Sqrt(Math.Abs(x * x - sizeRadius * sizeRadius)))) + biome.Location.Y < sizeOfArray)
                 {
                     map[Convert.ToInt32((x + biome.Location.X)), -Convert.ToInt32((Math.Sqrt(Math.Abs(x * x - sizeRadius * sizeRadius)))) + biome.Location.Y].AltColor = Color.Red;
                     Console.WriteLine(Convert.ToInt32((x + biome.Location.X)) + " " + -Convert.ToInt32((Math.Sqrt(Math.Abs(x * x - sizeRadius * sizeRadius)))) + biome.Location.Y);
-
                 }
             }
         }
