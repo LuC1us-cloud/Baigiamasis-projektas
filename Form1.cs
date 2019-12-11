@@ -29,7 +29,7 @@ namespace movable_2dmap
         private void Form1_Shown(object sender, EventArgs e)
         {
             //Fills the map with tiles
-            MapGenerator.fillMap();
+            MapGenerator.FillMap();
             timer1.Interval = 1000;
             timer1.Start();
         }

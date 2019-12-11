@@ -15,7 +15,7 @@ namespace movable_2dmap
         static int visibleMapSizeHorizontal = 20;
         static int visibleMapSizeVertical = 20;
 
-        public static void fillMap()
+        public static void FillMap()
         {
             // Possible Tiles: Grass,  Gravel, Tree, Stone, High stone (mountain), <(Technical tiles)>.
             Random random = new Random();

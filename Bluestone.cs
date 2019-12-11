@@ -51,6 +51,33 @@ namespace movable_2dmap
         }
 
         /// <summary>
+        /// Returns the direction relative to another object.
+        /// </summary>
+        /// <param name="objectOfInterest">Object's location that you want to find.</param>
+        /// <param name="comparison">The object that you are comparing with.</param>
+        /// <returns></returns>
+        static string FindDirectionalRelation(Point objectOfInterest, Point comparison)
+        {
+            if (objectOfInterest == new Point(comparison.X, comparison.Y - 1))
+            {
+                return "top";
+            }
+            else if (objectOfInterest == new Point(comparison.X + 1, comparison.Y))
+            {
+                return "right";
+            }
+            else if (objectOfInterest == new Point(comparison.X, comparison.Y + 1))
+            {
+                return "bottom";
+            }
+            else if (objectOfInterest == new Point(comparison.X - 1, comparison.Y))
+            {
+                return "left";
+            }
+            return "null";
+        }
+
+        /// <summary>
         /// Powers on bluestone that has a powered tile adjacent.
         /// </summary>
         public static void UpdateBluestone()
