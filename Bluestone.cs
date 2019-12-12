@@ -276,7 +276,7 @@ namespace movable_2dmap
             {
                 if (InputCount(gate, new List<string> { "Torch" }) == 2)
                 {
-                    MapGenerator.map[gate.X, gate.Y] = new MapTile("AND_gate_powered", 5, null, Color.Red);
+                    MapGenerator.map[gate.X, gate.Y] = new MapTile("AND_gate_powered", 5,  Color.Red);
                 }
             }
         }
@@ -292,7 +292,7 @@ namespace movable_2dmap
             {
                 if (InputCount(gate, new List<string> { "Torch" }) > 0 && InputCount(gate, new List<string> { "Torch" }) < 3)
                 {
-                    MapGenerator.map[gate.X, gate.Y] = new MapTile("OR_gate_powered", 5, null, Color.Red);
+                    MapGenerator.map[gate.X, gate.Y] = new MapTile("OR_gate_powered", 5,  Color.Red);
                 }
             }
         }
