@@ -11,6 +11,7 @@ namespace movable_2dmap
         public static List<Point> placedTorches = new List<Point>();
         public static List<Point> placedDelayers = new List<Point>();
         public static List<Point> placedANDgates = new List<Point>();
+        public static List<Point> placedORgates = new List<Point>();
 
         /// <summary>
         /// Checks in four directions if there is a tile with power and returns true if found, returns false otherwise.
@@ -111,12 +112,12 @@ namespace movable_2dmap
             UnpowerBluestone();
             for (int i = 0; i < placedBluestone.Count; i++)
             {
-                if (MapGenerator.map[placedBluestone[i].X, placedBluestone[i].Y].Name != "Bluestone_powered" && PowerCheck(placedBluestone[i], new string[] { "Torch", "Bluestone_powered", "Delayer_bottom", "Delayer_left", "Delayer_top", "Delayer_right", "AND_gate_powered" }, "any"))
+                if (MapGenerator.map[placedBluestone[i].X, placedBluestone[i].Y].Name != "Bluestone_powered" && PowerCheck(placedBluestone[i], new string[] { "Torch", "Bluestone_powered", "Delayer_bottom", "Delayer_left", "Delayer_top", "Delayer_right", "AND_gate_powered", "OR_gate_powered" }, "any"))
                 {
                     MapGenerator.map[placedBluestone[i].X, placedBluestone[i].Y] = new MapTile("Bluestone_powered", 2, null, Color.Blue);
                     i = 0;
                 }
-                if (placedBluestone.Count > 0 && PowerCheck(placedBluestone[0], new string[] { "Torch", "Bluestone_powered", "Delayer_bottom", "Delayer_left", "Delayer_top", "Delayer_right", "AND_gate_powered" }, "any"))
+                if (placedBluestone.Count > 0 && PowerCheck(placedBluestone[0], new string[] { "Torch", "Bluestone_powered", "Delayer_bottom", "Delayer_left", "Delayer_top", "Delayer_right", "AND_gate_powered", "OR_gate_powered" }, "any"))
                 {
                     MapGenerator.map[placedBluestone[0].X, placedBluestone[0].Y] = new MapTile("Bluestone_powered", 2, null, Color.Blue);
                 }
@@ -243,7 +244,10 @@ namespace movable_2dmap
             }
         }
 
-        static void UnpowerGates()
+        /// <summary>
+        /// Unpowers all AND gates.
+        /// </summary>
+        static void UnpowerANDGates()
         {
             foreach (var gate in placedANDgates)
             {
@@ -251,14 +255,44 @@ namespace movable_2dmap
             }
         }
 
-        public static void UpdateGates()
+        /// <summary>
+        /// Unpowers all OR gates.
+        /// </summary>
+        static void UnpowerORGates()
         {
-            UnpowerGates();
+            foreach (var gate in placedORgates)
+            {
+                MapGenerator.map[gate.X, gate.Y] = MapTile.tileList[6];
+            }
+        }
+
+        /// <summary>
+        /// Repowers AND gates that have two inputs.
+        /// </summary>
+        public static void UpdateANDGates()
+        {
+            UnpowerANDGates();
             foreach (var gate in placedANDgates)
             {
                 if (InputCount(gate, new List<string> { "Torch" }) == 2)
                 {
                     MapGenerator.map[gate.X, gate.Y] = new MapTile("AND_gate_powered", 5, null, Color.Red);
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// Repoers OR gates that have more than 1 input, but less than 3.
+        /// </summary>
+        public static void UpdateORGates()
+        {
+            UnpowerORGates();
+            foreach (var gate in placedORgates)
+            {
+                if (InputCount(gate, new List<string> { "Torch" }) > 0 && InputCount(gate, new List<string> { "Torch" }) < 3)
+                {
+                    MapGenerator.map[gate.X, gate.Y] = new MapTile("OR_gate_powered", 5, null, Color.Red);
                 }
             }
         }

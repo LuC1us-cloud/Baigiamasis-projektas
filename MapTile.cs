@@ -25,7 +25,8 @@ namespace movable_2dmap
             new MapTile("Bluestone", 2, null, Color.DarkBlue),
             new MapTile("Torch", 3, null, Color.Magenta),
             new MapTile("Delayer", 4, null, Color.Gray),
-            new MapTile("AND_gate", 5, null, Color.Pink)
+            new MapTile("AND_gate", 5, null, Color.Pink),
+            new MapTile("OR_gate", 6, null, Color.DarkCyan)
         };
 
         /// <summary>
@@ -47,6 +48,8 @@ namespace movable_2dmap
                     case 3:
                         Bluestone.placedTorches.Add(new Point(i, j));
                         Bluestone.UpdateTorches();
+                        Bluestone.UpdateANDGates();
+                        Bluestone.UpdateORGates();
                         break;
                     case 4:
                         Bluestone.placedDelayers.Add(new Point(i, j));
@@ -54,12 +57,16 @@ namespace movable_2dmap
                         break;
                     case 5:
                         Bluestone.placedANDgates.Add(new Point(i, j));
+                        Bluestone.UpdateANDGates();
+                        break;
+                    case 6:
+                        Bluestone.placedORgates.Add(new Point(i, j));
+                        Bluestone.UpdateORGates();
                         break;
                     default:
                         break;
                 }
                 Bluestone.UpdateBluestone();
-                Bluestone.UpdateGates();
                 Form.ActiveForm.Invalidate();
             }
             else if (e.Button == MouseButtons.Right)
@@ -77,7 +84,8 @@ namespace movable_2dmap
                         MapGenerator.map[i, j] = tileList[1];
                         Bluestone.placedTorches.Remove(new Point(i, j));
                         Bluestone.UpdateTorches();
-                        Bluestone.UpdateGates();
+                        Bluestone.UpdateANDGates();
+                        Bluestone.UpdateORGates();
                         Bluestone.UpdateBluestone();
                         break;
                     case "Delayer":
@@ -94,6 +102,11 @@ namespace movable_2dmap
                     case "AND_gate":
                     case "AND_gate_powered":
                         Bluestone.placedANDgates.Remove(new Point(i, j));
+                        Bluestone.UpdateBluestone();
+                        break;
+                    case "OR_gate":
+                    case "OR_gate_powered":
+                        Bluestone.placedORgates.Remove(new Point(i, j));
                         Bluestone.UpdateBluestone();
                         break;
                     default:
