@@ -16,6 +16,9 @@ namespace movable_2dmap
         static int visibleMapSizeHorizontal = 20;
         static int visibleMapSizeVertical = 20;
 
+        /// <summary>
+        /// Fills the map with tiles.
+        /// </summary>
         public static void FillMap()
         {
             if (File.Exists(@"demo.txt"))
@@ -85,9 +88,10 @@ namespace movable_2dmap
             Console.WriteLine(map[0,0].ToString());
             Console.WriteLine(map[0, 1].ToString());
         }
+
         public static void GenerateCircularBiomes(Biome biome, int sizeRadius)
         {
-            for (double x = -sizeRadius; x <= sizeRadius; x=x+0.1)
+            for (double x = -sizeRadius; x <= sizeRadius; x += 0.1)
             {
                 if (Convert.ToInt32((x + biome.Location.X)) >= 0 && Convert.ToInt32((x + biome.Location.X)) < sizeOfArray && Convert.ToInt32((Math.Sqrt(Math.Abs(x * x - sizeRadius * sizeRadius)))) + biome.Location.Y >= 0 && Convert.ToInt32((Math.Sqrt(Math.Abs(x * x - sizeRadius * sizeRadius)))) + biome.Location.Y < sizeOfArray)
                 {
@@ -101,6 +105,14 @@ namespace movable_2dmap
                 }
             }
         }
+
+        /// <summary>
+        /// Draws the map and grid
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// <param name="startingPointX"></param>
+        /// <param name="startingPointY"></param>
         public static void DrawMapAndGrid(object sender, PaintEventArgs e, int startingPointX, int startingPointY)
         {
             for (int x = startingPointX; x < startingPointX + visibleMapSizeHorizontal; x++)

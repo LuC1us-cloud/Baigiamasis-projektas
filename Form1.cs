@@ -12,11 +12,9 @@ namespace movable_2dmap
         }
 
         public static MouseEventArgs mouse;
-        public static Keys keyHeld;
 
         private void Form1_MouseMove(object sender, MouseEventArgs e)
         {
-            //Moves the visible map window
             FormControls.MoveVisibleMap(sender, e);
             mouse = e;
         }
@@ -29,7 +27,6 @@ namespace movable_2dmap
 
         private void Form1_Shown(object sender, EventArgs e)
         {
-            //Fills the map with tiles
             MapGenerator.FillMap();
             timer1.Interval = 1000;
             timer1.Start();
@@ -38,7 +35,6 @@ namespace movable_2dmap
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
-            //Draws the map and grid
             MapGenerator.DrawMapAndGrid(sender, e, FormControls.startingPointX, FormControls.startingPointY);
         }
 
@@ -47,13 +43,12 @@ namespace movable_2dmap
             MapTile.ProcessTileChange(e);
         }
 
+        public static Keys keyHeld;
+
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
             keyHeld = e.KeyData;
-            if (keyHeld == Keys.D)
-            {
-                MapTile.ProcessTileChange(mouse);
-            }
+            MapTile.ProcessTileChange(mouse);
         }
 
         private void Timer1_Tick(object sender, EventArgs e)
