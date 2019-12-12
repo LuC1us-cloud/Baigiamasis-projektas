@@ -119,6 +119,11 @@ namespace movable_2dmap
             {
                 for (int y = startingPointY; y < startingPointY + visibleMapSizeVertical; y++)
                 {
+                    if (map[x,y].ID == 1)
+                    {
+                        e.Graphics.FillRectangle(new TextureBrush(Properties.Resources.grass), new Rectangle(new Point(mapOffset + (x - startingPointX) * sizeOfTile, mapOffset + (y - startingPointY) * sizeOfTile), new Size(sizeOfTile, sizeOfTile)));
+                    }
+                    else
                     e.Graphics.FillRectangle(new SolidBrush(map[x, y].AltColor), new Rectangle(new Point(mapOffset + (x - startingPointX) * sizeOfTile, mapOffset + (y - startingPointY) * sizeOfTile), new Size(sizeOfTile, sizeOfTile)));
                 }
             }
