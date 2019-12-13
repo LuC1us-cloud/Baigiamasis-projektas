@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Drawing;
-using System.Windows.Forms;
 
 namespace movable_2dmap
 {
@@ -17,9 +15,11 @@ namespace movable_2dmap
         public static List<MapTile> tileList = new List<MapTile>{
             new MapTile("Null", 0),
             new MapTile("Grass", 1),
-            new MapTile("Food", 2)
+            new MapTile("Food", 2),
+            new MapTile("Snake", 3),
         };
-        public  override string ToString()
+
+        public override string ToString()
         {
             string temp = Name + " " + ID.ToString();
             return temp;

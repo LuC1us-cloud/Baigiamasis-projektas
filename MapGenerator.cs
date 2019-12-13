@@ -14,6 +14,7 @@ namespace movable_2dmap
         public static MapTile[,] map = new MapTile[sizeOfArray, sizeOfArray];
         static List<Biome> biomes = new List<Biome>();
         static List<MapTile> FoodList = new List<MapTile>();
+        public static List<Point> foodPoints = new List<Point>();
         static int visibleMapSizeHorizontal = 20;
         static int visibleMapSizeVertical = 20;
 
@@ -31,6 +32,7 @@ namespace movable_2dmap
                 FillMapFirstTime();
             }
         }
+
         public static void FillMapFromFile()
         {
             string name;
@@ -53,6 +55,7 @@ namespace movable_2dmap
                 }
             }
         }
+
         public static void FillMapFirstTime()
         {
             // Possible Tiles: Grass,  Gravel, Tree, Stone, High stone (mountain), <(Technical tiles)>.
@@ -81,7 +84,9 @@ namespace movable_2dmap
             //Prints names and locations of all special biomes on map
             foreach (var item in FoodList)
             {
-                map[random.Next(0, sizeOfArray), random.Next(0, sizeOfArray)] = item;
+                Point food = new Point(random.Next(0, sizeOfArray), random.Next(0, sizeOfArray));
+                map[food.X, food.Y] = item;
+                foodPoints.Add(food);
             }
         }
 
@@ -103,7 +108,7 @@ namespace movable_2dmap
         }
 
         /// <summary>
-        /// Draws the map and grid
+        /// Draws the map and grid.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -123,6 +128,8 @@ namespace movable_2dmap
                         case 1: brush = new TextureBrush(Properties.Resources.grass);
                             break;
                         case 2: brush = new TextureBrush(Properties.Resources.food, System.Drawing.Drawing2D.WrapMode.Tile, new Rectangle(new Point(0, 0), new Size(20, 20)));
+                            break;
+                        case 3: brush = new SolidBrush(Color.DarkGreen);
                             break;
                         default:
                             break;
