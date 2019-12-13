@@ -13,6 +13,7 @@ namespace movable_2dmap
         public static int mapOffset = 10;
         public static MapTile[,] map = new MapTile[sizeOfArray, sizeOfArray];
         static List<Biome> biomes = new List<Biome>();
+        static List<MapTile> FoodList = new List<MapTile>();
         static int visibleMapSizeHorizontal = 20;
         static int visibleMapSizeVertical = 20;
 
@@ -34,7 +35,6 @@ namespace movable_2dmap
         {
             string name;
             int id;
-            int color;
             string temp = "";
             string[] vs;
             using (StreamReader sr = File.OpenText(@"demo.txt"))
@@ -47,9 +47,8 @@ namespace movable_2dmap
                         vs = temp.Split();
                         name = vs[0];
                         id = Convert.ToInt32(vs[1]);
-                        color = Convert.ToInt32(vs[2]);
-                        Console.WriteLine(name + " " + id + " " + color);
-                        map[x, y] = new MapTile(name, id, Color.FromArgb(color));
+                        Console.WriteLine(name + " " + id);
+                        map[x, y] = new MapTile(name, id);
                     }
                 }
             }
@@ -59,34 +58,31 @@ namespace movable_2dmap
             // Possible Tiles: Grass,  Gravel, Tree, Stone, High stone (mountain), <(Technical tiles)>.
             Random random = new Random();
             int ForestPatchAmount = random.Next(sizeOfArray / 30 - 1, sizeOfArray / 30 + 1);
+            int FoodAmount = random.Next(sizeOfArray / 3 - 10, sizeOfArray / 3 + 10);
+            Console.WriteLine(FoodAmount);
             //int GravelPatchAmount = random.Next(SizeOfArray / );
             //fills map with grass
             for (int x = 0; x < sizeOfArray; x++)
             {
                 for (int y = 0; y < sizeOfArray; y++)
                 {
-                    map[x, y] = new MapTile("Grass", 1,  Color.GreenYellow); // temp
+                    map[x, y] = new MapTile("Grass", 1); // temp
                 }
+            }
+            for (int food = 0; food < FoodAmount; food++)
+            {
+                FoodList.Add(new MapTile("Food",2));
             }
             //Generates Forests and their center points are saved (will be)
             for (int forest = 0; forest < ForestPatchAmount; forest++)
             {
                 biomes.Add(new Biome("Forest", new Point(random.Next(0, sizeOfArray), random.Next(0, sizeOfArray))));
             }
-            //Generates gravel pathches 
-            //for (int gravel = 0; gravel < GravelPatchAmount; gravel++)
-            {
-                
-            }
             //Prints names and locations of all special biomes on map
-            foreach (var item in biomes)
+            foreach (var item in FoodList)
             {
-                Console.WriteLine(item.Name + " at: " + item.Location);
-                map[item.Location.X, item.Location.Y].AltColor = Color.Black;
-                GenerateCircularBiomes(item, 10);
+                map[random.Next(0, sizeOfArray), random.Next(0, sizeOfArray)] = item;
             }
-            Console.WriteLine(map[0,0].ToString());
-            Console.WriteLine(map[0, 1].ToString());
         }
 
         public static void GenerateCircularBiomes(Biome biome, int sizeRadius)
@@ -95,12 +91,12 @@ namespace movable_2dmap
             {
                 if (Convert.ToInt32((x + biome.Location.X)) >= 0 && Convert.ToInt32((x + biome.Location.X)) < sizeOfArray && Convert.ToInt32((Math.Sqrt(Math.Abs(x * x - sizeRadius * sizeRadius)))) + biome.Location.Y >= 0 && Convert.ToInt32((Math.Sqrt(Math.Abs(x * x - sizeRadius * sizeRadius)))) + biome.Location.Y < sizeOfArray)
                 {
-                    map[Convert.ToInt32((x + biome.Location.X)), Convert.ToInt32((Math.Sqrt(Math.Abs(x * x - sizeRadius * sizeRadius)))) + biome.Location.Y].AltColor = Color.Red;
+                    map[Convert.ToInt32((x + biome.Location.X)), Convert.ToInt32((Math.Sqrt(Math.Abs(x * x - sizeRadius * sizeRadius)))) + biome.Location.Y].ID = 0;
                     Console.WriteLine(Convert.ToInt32((x + biome.Location.X)) + " " + Convert.ToInt16((Math.Sqrt(Math.Abs(x * x - sizeRadius * sizeRadius)))) + biome.Location.Y);
                 }
                 if (Convert.ToInt32((x + biome.Location.X)) >= 0 && Convert.ToInt32((x + biome.Location.X)) < sizeOfArray && -Convert.ToInt32((Math.Sqrt(Math.Abs(x * x - sizeRadius * sizeRadius)))) + biome.Location.Y >= 0 && -Convert.ToInt32((Math.Sqrt(Math.Abs(x * x - sizeRadius * sizeRadius)))) + biome.Location.Y < sizeOfArray)
                 {
-                    map[Convert.ToInt32((x + biome.Location.X)), -Convert.ToInt32((Math.Sqrt(Math.Abs(x * x - sizeRadius * sizeRadius)))) + biome.Location.Y].AltColor = Color.Red;
+                    map[Convert.ToInt32((x + biome.Location.X)), -Convert.ToInt32((Math.Sqrt(Math.Abs(x * x - sizeRadius * sizeRadius)))) + biome.Location.Y].ID = 0;
                     Console.WriteLine(Convert.ToInt32((x + biome.Location.X)) + " " + -Convert.ToInt32((Math.Sqrt(Math.Abs(x * x - sizeRadius * sizeRadius)))) + biome.Location.Y);
                 }
             }
@@ -119,12 +115,19 @@ namespace movable_2dmap
             {
                 for (int y = startingPointY; y < startingPointY + visibleMapSizeVertical; y++)
                 {
-                    if (map[x,y].ID == 1)
+                    Brush brush = new SolidBrush(Color.White);
+                    switch (map[x, y].ID)
                     {
-                        e.Graphics.FillRectangle(new TextureBrush(Properties.Resources.grass), new Rectangle(new Point(mapOffset + (x - startingPointX) * sizeOfTile, mapOffset + (y - startingPointY) * sizeOfTile), new Size(sizeOfTile, sizeOfTile)));
+                        case 0: brush = new SolidBrush(Color.Black);
+                            break;
+                        case 1: brush = new TextureBrush(Properties.Resources.grass);
+                            break;
+                        case 2: brush = new TextureBrush(Properties.Resources.food, System.Drawing.Drawing2D.WrapMode.Tile, new Rectangle(new Point(0, 0), new Size(20, 20)));
+                            break;
+                        default:
+                            break;
                     }
-                    else
-                    e.Graphics.FillRectangle(new SolidBrush(map[x, y].AltColor), new Rectangle(new Point(mapOffset + (x - startingPointX) * sizeOfTile, mapOffset + (y - startingPointY) * sizeOfTile), new Size(sizeOfTile, sizeOfTile)));
+                    e.Graphics.FillRectangle(brush, new Rectangle(new Point(mapOffset + (x - startingPointX) * sizeOfTile, mapOffset + (y - startingPointY) * sizeOfTile), new Size(sizeOfTile, sizeOfTile)));
                 }
             }
             for (int x = 0; x <= visibleMapSizeHorizontal; x++)

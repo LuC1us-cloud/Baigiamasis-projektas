@@ -76,7 +76,6 @@
             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseClick);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseDown);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseMove);
-            this.MouseWheel += new System.Windows.Forms.MouseEventHandler(FormControls.TileSelection);
             this.ResumeLayout(false);
 
         }

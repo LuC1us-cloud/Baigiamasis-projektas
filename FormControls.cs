@@ -68,23 +68,5 @@ namespace movable_2dmap
                 }
             }
         }
-
-        public static int scrollTolerance = 20;
-        public static int selectedID = 0;
-
-        /// <summary>
-        /// Changes selected tile ID based on a counter which is triggered every scroll event.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        public static void TileSelection(object sender, MouseEventArgs e)
-        {
-            selectedID++;
-            if (selectedID == MapTile.tileList.Count * scrollTolerance)
-            {
-                selectedID = 0;
-            }
-            //draw selection UI
-        }
     }
 }

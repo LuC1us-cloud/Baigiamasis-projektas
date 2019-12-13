@@ -40,7 +40,6 @@ namespace movable_2dmap
 
         private void Form1_MouseClick(object sender, MouseEventArgs e)
         {
-            MapTile.ProcessTileChange(e);
         }
 
         public static Keys keyHeld;
@@ -48,14 +47,10 @@ namespace movable_2dmap
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
             keyHeld = e.KeyData;
-            MapTile.ProcessTileChange(mouse);
         }
 
         private void Timer1_Tick(object sender, EventArgs e)
         {
-            Bluestone.UpdateDelayers();
-            Bluestone.UpdateBluestone();
-            Invalidate();
         }
         //Save file button
         private void button1_Click(object sender, EventArgs e)

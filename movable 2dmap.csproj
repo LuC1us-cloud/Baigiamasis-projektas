@@ -47,7 +47,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Biome.cs" />
-    <Compile Include="Bluestone.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -88,6 +87,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\grass.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\food.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
