@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
@@ -27,6 +26,7 @@ namespace movable_2dmap
         {
             MapGenerator.FillMap();
             Snake.GenerateSnakeHead();
+            Snake.closestFood = Snake.FindClosestsFood();
             timer1.Interval = 500;
             timer1.Start();
         }
@@ -70,7 +70,7 @@ namespace movable_2dmap
 
         private void Timer1_Tick(object sender, EventArgs e)
         {
-            Snake.MoveToObjective(new Point(MapGenerator.foodPoints[0].X, MapGenerator.foodPoints[0].Y));
+            Snake.MoveToObjective(Snake.closestFood);
             Snake.FollowSnakeHead();
             Invalidate();
         }
