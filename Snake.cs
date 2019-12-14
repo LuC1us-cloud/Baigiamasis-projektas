@@ -7,6 +7,7 @@ namespace movable_2dmap
     class Snake
     {
         static List<Point> snakeBodyPoints = new List<Point>() { };
+        public static bool followSnakeHead = false;
         public static Point closestFood = new Point();
         
         public static void GenerateSnakeHead()
@@ -65,6 +66,11 @@ namespace movable_2dmap
         {
             MapGenerator.map[foodPoint.X, foodPoint.Y] = MapTile.tileList[1];
             MapGenerator.foodPoints.Remove(foodPoint);
+            if (MapGenerator.foodPoints.Count == 0)
+            {
+                Console.WriteLine("Game over!");
+                Form1.ActiveForm.Close();
+            }
             snakeBodyPoints.Add(foodPoint);
             closestFood = FindClosestsFood();
         }

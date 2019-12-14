@@ -71,8 +71,19 @@ namespace movable_2dmap
         private void Timer1_Tick(object sender, EventArgs e)
         {
             Snake.MoveToObjective(Snake.closestFood);
-            Snake.FollowSnakeHead();
+            if (Snake.followSnakeHead == true)
+            {
+                Snake.FollowSnakeHead();
+            }
             Invalidate();
+        }
+
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyData == Keys.Space)
+            {
+                Snake.followSnakeHead = !Snake.followSnakeHead;
+            }
         }
     }
 }
