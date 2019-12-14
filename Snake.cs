@@ -6,13 +6,12 @@ namespace movable_2dmap
 {
     class Snake
     {
-        public static List<Point> snakeBodyPoints = new List<Point>() { };
+        static List<Point> snakeBodyPoints = new List<Point>() { };
         
         public static void GenerateSnakeHead()
         {
             Random random = new Random();
-            Point snakeHeadPoint = new Point(random.Next(0, MapGenerator.sizeOfArray), random.Next(0, MapGenerator.sizeOfArray));
-            snakeBodyPoints.Add(snakeHeadPoint);
+            snakeBodyPoints.Add(new Point(random.Next(0, MapGenerator.sizeOfArray), random.Next(0, MapGenerator.sizeOfArray)));
         }
 
         public static void MoveToObjective(Point objective)
@@ -66,6 +65,20 @@ namespace movable_2dmap
             MapGenerator.map[foodPoint.X, foodPoint.Y] = MapTile.tileList[1];
             MapGenerator.foodPoints.Remove(foodPoint);
             snakeBodyPoints.Add(foodPoint);
+        }
+
+        public static void FollowSnakeHead()
+        {
+            FormControls.startingPointX = snakeBodyPoints[0].X;
+            if (FormControls.startingPointX > MapGenerator.sizeOfArray - MapGenerator.visibleMapSizeHorizontal)
+            {
+                FormControls.startingPointX = MapGenerator.sizeOfArray - MapGenerator.visibleMapSizeHorizontal;
+            }
+            FormControls.startingPointY = snakeBodyPoints[0].Y;
+            if (FormControls.startingPointY > MapGenerator.sizeOfArray - MapGenerator.visibleMapSizeVertical)
+            {
+                FormControls.startingPointY = MapGenerator.sizeOfArray - MapGenerator.visibleMapSizeVertical;
+            }
         }
     }
 }

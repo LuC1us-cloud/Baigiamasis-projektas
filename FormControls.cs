@@ -6,8 +6,8 @@ namespace movable_2dmap
     public static class FormControls
     {
         public static Point mouseDragStart;
-        public static int startingPointX = MapGenerator.sizeOfArray - MapGenerator.visibleMapSizeHorizontal;
-        public static int startingPointY = MapGenerator.sizeOfArray - MapGenerator.visibleMapSizeVertical;
+        public static int startingPointX = 10;
+        public static int startingPointY = 10;
 
         /// <summary>
         /// Moves the visible map window.

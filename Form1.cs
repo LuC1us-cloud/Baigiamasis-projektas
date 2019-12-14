@@ -71,6 +71,7 @@ namespace movable_2dmap
         private void Timer1_Tick(object sender, EventArgs e)
         {
             Snake.MoveToObjective(new Point(MapGenerator.foodPoints[0].X, MapGenerator.foodPoints[0].Y));
+            Snake.FollowSnakeHead();
             Invalidate();
         }
     }

@@ -8,7 +8,7 @@ namespace movable_2dmap
 {
     public static class MapGenerator
     {
-        public static int sizeOfArray = 21;
+        public static int sizeOfArray = 40;
         public static int sizeOfTile = 20;
         public static int mapOffset = 10;
         public static MapTile[,] map = new MapTile[sizeOfArray, sizeOfArray];
