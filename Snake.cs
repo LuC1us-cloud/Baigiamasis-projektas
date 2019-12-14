@@ -6,42 +6,39 @@ namespace movable_2dmap
 {
     class Snake
     {
-        public static Point snakeHeadPoint;
         public static List<Point> snakeBodyPoints = new List<Point>() { };
-        static int bodyCount = 0; //temp
-        static string lastMove;
         
         public static void GenerateSnakeHead()
         {
             Random random = new Random();
-            snakeHeadPoint = new Point(random.Next(0, MapGenerator.sizeOfArray), random.Next(0, MapGenerator.sizeOfArray));
+            Point snakeHeadPoint = new Point(random.Next(0, MapGenerator.sizeOfArray), random.Next(0, MapGenerator.sizeOfArray));
+            snakeBodyPoints.Add(snakeHeadPoint);
         }
 
         public static void MoveToObjective(Point objective)
         {
-            Console.WriteLine(objective);
             ClearSnakeFromMap();
-            if (snakeHeadPoint.X < objective.X)
+            for (int i = snakeBodyPoints.Count - 1; i > 0; i--)
             {
-                snakeHeadPoint.X++;
-                lastMove = "right";
+                snakeBodyPoints[i] = snakeBodyPoints[i - 1];
             }
-            else if (snakeHeadPoint.X > objective.X)
+            if (snakeBodyPoints[0].X < objective.X)
             {
-                snakeHeadPoint.X--;
-                lastMove = "left";
+                snakeBodyPoints[0] = new Point(snakeBodyPoints[0].X + 1, snakeBodyPoints[0].Y);
             }
-            else if (snakeHeadPoint.Y < objective.Y)
+            else if (snakeBodyPoints[0].X > objective.X)
             {
-                snakeHeadPoint.Y++;
-                lastMove = "up";
+                snakeBodyPoints[0] = new Point(snakeBodyPoints[0].X - 1, snakeBodyPoints[0].Y);
             }
-            else if (snakeHeadPoint.Y > objective.Y)
+            else if (snakeBodyPoints[0].Y < objective.Y)
             {
-                snakeHeadPoint.Y--;
-                lastMove = "down";
+                snakeBodyPoints[0] = new Point(snakeBodyPoints[0].X, snakeBodyPoints[0].Y + 1);
             }
-            if (snakeHeadPoint == objective)
+            else if (snakeBodyPoints[0].Y > objective.Y)
+            {
+                snakeBodyPoints[0] = new Point(snakeBodyPoints[0].X, snakeBodyPoints[0].Y - 1);
+            }
+            if (snakeBodyPoints[0] == objective)
             {
                 Eat(objective);
             }
@@ -50,7 +47,6 @@ namespace movable_2dmap
 
         static void ConvertSnakeDataToMap()
         {
-            MapGenerator.map[snakeHeadPoint.X, snakeHeadPoint.Y] = MapTile.tileList[3];
             foreach (var point in snakeBodyPoints)
             {
                 MapGenerator.map[point.X, point.Y] = MapTile.tileList[3];
@@ -59,7 +55,6 @@ namespace movable_2dmap
 
         static void ClearSnakeFromMap()
         {
-            MapGenerator.map[snakeHeadPoint.X, snakeHeadPoint.Y] = MapTile.tileList[1];
             foreach (var point in snakeBodyPoints)
             {
                 MapGenerator.map[point.X, point.Y] = MapTile.tileList[1];
@@ -70,6 +65,7 @@ namespace movable_2dmap
         {
             MapGenerator.map[foodPoint.X, foodPoint.Y] = MapTile.tileList[1];
             MapGenerator.foodPoints.Remove(foodPoint);
+            snakeBodyPoints.Add(foodPoint);
         }
     }
 }

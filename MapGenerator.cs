@@ -8,15 +8,15 @@ namespace movable_2dmap
 {
     public static class MapGenerator
     {
-        public static int sizeOfArray = 110;
+        public static int sizeOfArray = 21;
         public static int sizeOfTile = 20;
         public static int mapOffset = 10;
         public static MapTile[,] map = new MapTile[sizeOfArray, sizeOfArray];
         static List<Biome> biomes = new List<Biome>();
         static List<MapTile> FoodList = new List<MapTile>();
         public static List<Point> foodPoints = new List<Point>();
-        static int visibleMapSizeHorizontal = 20;
-        static int visibleMapSizeVertical = 20;
+        public static int visibleMapSizeHorizontal = 20;
+        public static int visibleMapSizeVertical = 20;
 
         /// <summary>
         /// Fills the map with tiles.
