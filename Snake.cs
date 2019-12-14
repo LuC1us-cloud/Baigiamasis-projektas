@@ -39,6 +39,7 @@ namespace movable_2dmap
             {
                 snakeBodyPoints[0] = new Point(snakeBodyPoints[0].X, snakeBodyPoints[0].Y - 1);
             }
+            CollisionCheck();
             if (snakeBodyPoints[0] == objective)
             {
                 Eat(objective);
@@ -102,6 +103,17 @@ namespace movable_2dmap
                 }
             }
             return closestFoodPoint;
+        }
+
+        static void CollisionCheck()
+        {
+            for (int i = 1; i < snakeBodyPoints.Count; i++)
+            {
+                if (snakeBodyPoints[0] == snakeBodyPoints[i])
+                {
+                    Console.WriteLine("Ouch! Don't bite yourself.");
+                }
+            }
         }
     }
 }
