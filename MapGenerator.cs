@@ -17,6 +17,7 @@ namespace movable_2dmap
         public static List<Point> foodPoints = new List<Point>();
         public static int visibleMapSizeHorizontal = 20;
         public static int visibleMapSizeVertical = 20;
+        public static bool useTextures = true;
 
         /// <summary>
         /// Fills the map with tiles.
@@ -62,7 +63,6 @@ namespace movable_2dmap
             Random random = new Random();
             int ForestPatchAmount = random.Next(sizeOfArray / 30 - 1, sizeOfArray / 30 + 1);
             int FoodAmount = random.Next(sizeOfArray / 3 - 10, sizeOfArray / 3 + 10);
-            Console.WriteLine(FoodAmount);
             //int GravelPatchAmount = random.Next(SizeOfArray / );
             //fills map with grass
             for (int x = 0; x < sizeOfArray; x++)
@@ -123,11 +123,16 @@ namespace movable_2dmap
                     Brush brush = new SolidBrush(Color.White);
                     switch (map[x, y].ID)
                     {
-                        case 0: brush = new SolidBrush(Color.Black);
+                        case 0:
+                            brush = new SolidBrush(Color.Black);
                             break;
-                        case 1: brush = new TextureBrush(Properties.Resources.grass);
+                        case 1:
+                            if (useTextures == true) brush = new TextureBrush(Properties.Resources.grass);
+                            else brush = new SolidBrush(Color.YellowGreen);
                             break;
-                        case 2: brush = new TextureBrush(Properties.Resources.food, System.Drawing.Drawing2D.WrapMode.Tile, new Rectangle(new Point(0, 0), new Size(20, 20)));
+                        case 2:
+                            if (useTextures == true) brush = new TextureBrush(Properties.Resources.food, System.Drawing.Drawing2D.WrapMode.Tile, new Rectangle(new Point(0, 0), new Size(20, 20)));
+                            else brush = new SolidBrush(Color.Brown);
                             break;
                         case 3: brush = new SolidBrush(Color.DarkGreen);
                             break;
@@ -142,6 +147,14 @@ namespace movable_2dmap
                 e.Graphics.DrawLine(new Pen(Color.FromArgb(50,0,0,0)), new Point(mapOffset + x * sizeOfTile, mapOffset), new Point(mapOffset + x * sizeOfTile, sizeOfTile * visibleMapSizeVertical + mapOffset));
                 e.Graphics.DrawLine(new Pen(Color.FromArgb(50, 0, 0, 0)), new Point(mapOffset, mapOffset + x * sizeOfTile), new Point(sizeOfTile * visibleMapSizeHorizontal + mapOffset, mapOffset + x * sizeOfTile));
             }
+        }
+
+        public static void GenerateFood()
+        {
+            Random random = new Random();
+            Point food = new Point(random.Next(0, sizeOfArray), random.Next(0, sizeOfArray));
+            map[food.X, food.Y] = new MapTile("Food", 2);
+            foodPoints.Add(food);
         }
     }
 }

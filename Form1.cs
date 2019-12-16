@@ -43,6 +43,7 @@ namespace movable_2dmap
         /// <param name="e"></param>
         private void Button1_Click(object sender, EventArgs e)
         {
+            ActiveControl = null;
             //Calls the save file method and pops up the directory dialog
             saveFileDialog1.ShowDialog();
         }
@@ -70,7 +71,11 @@ namespace movable_2dmap
 
         private void Timer1_Tick(object sender, EventArgs e)
         {
-            Snake.MoveToObjective(Snake.closestFood);
+            Snake.MoveSnake(Snake.closestFood);
+            if (Snake.outputObjective == true)
+            {
+                Console.WriteLine(Snake.closestFood);
+            }
             if (Snake.followSnakeHead == true)
             {
                 Snake.FollowSnakeHead();
@@ -78,12 +83,43 @@ namespace movable_2dmap
             Invalidate();
         }
 
-        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        private void FoodButton_Click(object sender, EventArgs e)
         {
-            if (e.KeyData == Keys.Space)
+            ActiveControl = null;
+            MapGenerator.GenerateFood();
+            Snake.closestFood = Snake.FindClosestsFood();
+        }
+
+        private void GraphicsToggle_Click(object sender, EventArgs e)
+        {
+            ActiveControl = null;
+            MapGenerator.useTextures = !MapGenerator.useTextures;
+        }
+
+        private void ObjectiveOutput_Click(object sender, EventArgs e)
+        {
+            ActiveControl = null;
+            Snake.outputObjective = !Snake.outputObjective;
+        }
+
+        static int oldSliderValue = 0;
+
+        private void GameSpeedSlider_Scroll(object sender, EventArgs e)
+        {
+            if (GameSpeedSlider.Value > oldSliderValue && timer1.Interval / 2 > 0)
             {
-                Snake.followSnakeHead = !Snake.followSnakeHead;
+                timer1.Interval /= 2;
             }
+            else if (GameSpeedSlider.Value < oldSliderValue && timer1.Interval < 500)
+            {
+                timer1.Interval *= 2;
+            }
+            oldSliderValue = GameSpeedSlider.Value;
+        }
+
+        private void TrackingToggle_Click(object sender, EventArgs e)
+        {
+            Snake.followSnakeHead = !Snake.followSnakeHead;
         }
     }
 }

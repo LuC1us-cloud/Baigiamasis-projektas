@@ -9,6 +9,10 @@ namespace movable_2dmap
         static List<Point> snakeBodyPoints = new List<Point>() { };
         public static bool followSnakeHead = false;
         public static Point closestFood = new Point();
+        static Point snakeTailPoint = new Point();
+        public static bool outputObjective = false;
+        static bool hitBottom = false;
+        static bool hitSide = false;
         
         public static void GenerateSnakeHead()
         {
@@ -16,13 +20,23 @@ namespace movable_2dmap
             snakeBodyPoints.Add(new Point(random.Next(0, MapGenerator.sizeOfArray), random.Next(0, MapGenerator.sizeOfArray)));
         }
 
-        public static void MoveToObjective(Point objective)
+        public static void MoveSnake(Point objective)
         {
-            ClearSnakeFromMap();
+            ClearSnakeTailFromMap();
+            snakeTailPoint = snakeBodyPoints[snakeBodyPoints.Count - 1];
             for (int i = snakeBodyPoints.Count - 1; i > 0; i--)
             {
                 snakeBodyPoints[i] = snakeBodyPoints[i - 1];
             }
+            //PathFind(objective);
+            PathFind2();
+            CollisionCheck();
+            TryToEat();
+            ConvertSnakeHeadToMap();
+        }
+
+        static void PathFind(Point objective)
+        {
             if (snakeBodyPoints[0].X < objective.X)
             {
                 snakeBodyPoints[0] = new Point(snakeBodyPoints[0].X + 1, snakeBodyPoints[0].Y);
@@ -39,52 +53,95 @@ namespace movable_2dmap
             {
                 snakeBodyPoints[0] = new Point(snakeBodyPoints[0].X, snakeBodyPoints[0].Y - 1);
             }
-            CollisionCheck();
-            if (snakeBodyPoints[0] == objective)
-            {
-                Eat(objective);
-            }
-            ConvertSnakeDataToMap();
         }
 
-        static void ConvertSnakeDataToMap()
+        static void PathFind2()
         {
-            foreach (var point in snakeBodyPoints)
+            if (snakeBodyPoints[0].Y == 0)
             {
-                MapGenerator.map[point.X, point.Y] = MapTile.tileList[3];
+                snakeBodyPoints[0] = new Point(snakeBodyPoints[0].X + 1, snakeBodyPoints[0].Y);
+                hitBottom = false;
+            }
+            else if (snakeBodyPoints[0].Y == MapGenerator.sizeOfArray - 1)
+            {
+                snakeBodyPoints[0] = new Point(snakeBodyPoints[0].X + 1, snakeBodyPoints[0].Y);
+                hitBottom = true;
+            }
+            if (hitSide == false && hitBottom == false && snakeBodyPoints[0].Y < MapGenerator.sizeOfArray - 1)
+            {
+                snakeBodyPoints[0] = new Point(snakeBodyPoints[0].X, snakeBodyPoints[0].Y + 1);
+            }
+            else if (hitSide == false && hitBottom == true)
+            {
+                snakeBodyPoints[0] = new Point(snakeBodyPoints[0].X, snakeBodyPoints[0].Y - 1);
+            }
+            if (hitSide == true && snakeBodyPoints[0].X > 0)
+            {
+                snakeBodyPoints[0] = new Point(snakeBodyPoints[0].X - 1, snakeBodyPoints[0].Y);
+            }
+            else if (snakeBodyPoints[0].X == 0)
+            {
+                hitSide = false;
+            }
+            if (snakeBodyPoints[0].X == MapGenerator.sizeOfArray - 1)
+            {
+                hitSide = true;
             }
         }
 
-        static void ClearSnakeFromMap()
+        static void ConvertSnakeHeadToMap()
         {
-            foreach (var point in snakeBodyPoints)
-            {
-                MapGenerator.map[point.X, point.Y] = MapTile.tileList[1];
-            }
+            MapGenerator.map[snakeBodyPoints[0].X, snakeBodyPoints[0].Y] = MapTile.tileList[3];
         }
 
-        static void Eat(Point foodPoint)
+        static void ClearSnakeTailFromMap()
         {
-            MapGenerator.map[foodPoint.X, foodPoint.Y] = MapTile.tileList[1];
-            MapGenerator.foodPoints.Remove(foodPoint);
-            if (MapGenerator.foodPoints.Count == 0)
+            MapGenerator.map[snakeBodyPoints[snakeBodyPoints.Count - 1].X, snakeBodyPoints[snakeBodyPoints.Count - 1].Y] = MapTile.tileList[1];
+        }
+
+        static void TryToEat()
+        {
+            for (int i = 0; i < MapGenerator.foodPoints.Count; i++)
             {
-                Console.WriteLine("Game over!");
-                Form1.ActiveForm.Close();
+                if (MapGenerator.foodPoints[i] == snakeBodyPoints[0])
+                {
+                    MapGenerator.map[MapGenerator.foodPoints[i].X, MapGenerator.foodPoints[i].Y] = MapTile.tileList[3];
+                    MapGenerator.foodPoints.Remove(MapGenerator.foodPoints[i]);
+                    if (MapGenerator.foodPoints.Count == 0)
+                    {
+                        Console.WriteLine("Game over!");
+                        Form1.ActiveForm.Close();
+                    }
+                    snakeBodyPoints.Add(snakeTailPoint);
+                    closestFood = FindClosestsFood();
+                    break;
+                }
             }
-            snakeBodyPoints.Add(foodPoint);
-            closestFood = FindClosestsFood();
         }
 
         public static void FollowSnakeHead()
         {
-            FormControls.startingPointX = snakeBodyPoints[0].X;
-            if (FormControls.startingPointX > MapGenerator.sizeOfArray - MapGenerator.visibleMapSizeHorizontal)
+            if (snakeBodyPoints[0].X >= 5 && snakeBodyPoints[0].X <= MapGenerator.sizeOfArray - MapGenerator.visibleMapSizeHorizontal)
+            {
+                FormControls.startingPointX = snakeBodyPoints[0].X - 5;
+            }
+            else if (snakeBodyPoints[0].X < 5)
+            {
+                FormControls.startingPointX = 0;
+            }
+            else if (snakeBodyPoints[0].X > MapGenerator.sizeOfArray - MapGenerator.visibleMapSizeHorizontal)
             {
                 FormControls.startingPointX = MapGenerator.sizeOfArray - MapGenerator.visibleMapSizeHorizontal;
             }
-            FormControls.startingPointY = snakeBodyPoints[0].Y;
-            if (FormControls.startingPointY > MapGenerator.sizeOfArray - MapGenerator.visibleMapSizeVertical)
+            if (snakeBodyPoints[0].Y >= 5 && snakeBodyPoints[0].Y <= MapGenerator.sizeOfArray - MapGenerator.visibleMapSizeVertical)
+            {
+                FormControls.startingPointY = snakeBodyPoints[0].Y - 5;
+            }
+            else if (snakeBodyPoints[0].Y < 5)
+            {
+                FormControls.startingPointY = 0;
+            }
+            else if (snakeBodyPoints[0].Y > MapGenerator.sizeOfArray - MapGenerator.visibleMapSizeVertical)
             {
                 FormControls.startingPointY = MapGenerator.sizeOfArray - MapGenerator.visibleMapSizeVertical;
             }
