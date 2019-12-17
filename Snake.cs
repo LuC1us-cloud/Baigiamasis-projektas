@@ -57,12 +57,12 @@ namespace movable_2dmap
 
         static void PathFind2()
         {
-            if (snakeBodyPoints[0].Y == 0)
+            if (snakeBodyPoints[0].Y == 1)
             {
                 snakeBodyPoints[0] = new Point(snakeBodyPoints[0].X + 1, snakeBodyPoints[0].Y);
                 hitBottom = false;
             }
-            else if (snakeBodyPoints[0].Y == MapGenerator.sizeOfArray - 1)
+            else if (snakeBodyPoints[0].Y == MapGenerator.sizeOfArray - 2)
             {
                 snakeBodyPoints[0] = new Point(snakeBodyPoints[0].X + 1, snakeBodyPoints[0].Y);
                 hitBottom = true;
@@ -75,7 +75,7 @@ namespace movable_2dmap
             {
                 snakeBodyPoints[0] = new Point(snakeBodyPoints[0].X, snakeBodyPoints[0].Y - 1);
             }
-            if (hitSide == true && snakeBodyPoints[0].X > 0)
+            if (hitSide == true)
             {
                 snakeBodyPoints[0] = new Point(snakeBodyPoints[0].X - 1, snakeBodyPoints[0].Y);
             }
@@ -83,7 +83,7 @@ namespace movable_2dmap
             {
                 hitSide = false;
             }
-            if (snakeBodyPoints[0].X == MapGenerator.sizeOfArray - 1)
+            if (snakeBodyPoints[0].X == MapGenerator.sizeOfArray - 1 && (snakeBodyPoints[0].Y == 1 || snakeBodyPoints[0].Y == MapGenerator.sizeOfArray - 2))
             {
                 hitSide = true;
             }
@@ -171,6 +171,12 @@ namespace movable_2dmap
                     Console.WriteLine("Ouch! Don't bite yourself.");
                 }
             }
+        }
+
+        //https://gigi.nullneuron.net/gigilabs/a-pathfinding-example-in-c/
+        static int ComputeHScore(int x, int y, int objectiveX, int objectiveY)
+        {
+            return Math.Abs(objectiveX - x) + Math.Abs(objectiveY - y);
         }
     }
 }
