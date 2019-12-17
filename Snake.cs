@@ -26,8 +26,8 @@ namespace movable_2dmap
             {
                 snakeBodyPoints[i] = snakeBodyPoints[i - 1];
             }
-            //PathFind(objective);
-            PathFind2();
+            PathFind(objective);
+            //PathFind2();
             CollisionCheck();
             TryToEat();
             ConvertSnakeHeadToMap();

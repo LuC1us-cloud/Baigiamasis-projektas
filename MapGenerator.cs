@@ -10,7 +10,7 @@ namespace movable_2dmap
     {
         public static int sizeOfArray = 40;
         public static int sizeOfTile = 20;
-        public static int mapOffset = 10;
+        public static Point mapOffset = new Point(10, 10);
         public static MapTile[,] map = new MapTile[sizeOfArray, sizeOfArray];
         static List<Biome> biomes = new List<Biome>();
         static List<MapTile> FoodList = new List<MapTile>();
@@ -139,13 +139,13 @@ namespace movable_2dmap
                         default:
                             break;
                     }
-                    e.Graphics.FillRectangle(brush, new Rectangle(new Point(mapOffset + (x - startingPointX) * sizeOfTile, mapOffset + (y - startingPointY) * sizeOfTile), new Size(sizeOfTile, sizeOfTile)));
+                    e.Graphics.FillRectangle(brush, new Rectangle(new Point(mapOffset.X + (x - startingPointX) * sizeOfTile, mapOffset.Y + (y - startingPointY) * sizeOfTile), new Size(sizeOfTile, sizeOfTile)));
                 }
             }
             for (int x = 0; x <= visibleMapSizeHorizontal; x++)
             {
-                e.Graphics.DrawLine(new Pen(Color.FromArgb(50,0,0,0)), new Point(mapOffset + x * sizeOfTile, mapOffset), new Point(mapOffset + x * sizeOfTile, sizeOfTile * visibleMapSizeVertical + mapOffset));
-                e.Graphics.DrawLine(new Pen(Color.FromArgb(50, 0, 0, 0)), new Point(mapOffset, mapOffset + x * sizeOfTile), new Point(sizeOfTile * visibleMapSizeHorizontal + mapOffset, mapOffset + x * sizeOfTile));
+                e.Graphics.DrawLine(new Pen(Color.FromArgb(50,0,0,0)), new Point(mapOffset.X + x * sizeOfTile, mapOffset.Y), new Point(mapOffset.X + x * sizeOfTile, sizeOfTile * visibleMapSizeVertical + mapOffset.Y));
+                e.Graphics.DrawLine(new Pen(Color.FromArgb(50, 0, 0, 0)), new Point(mapOffset.X, mapOffset.Y + x * sizeOfTile), new Point(sizeOfTile * visibleMapSizeHorizontal + mapOffset.X, mapOffset.Y + x * sizeOfTile));
             }
         }
 
@@ -155,7 +155,6 @@ namespace movable_2dmap
             Point food = new Point(random.Next(0, sizeOfArray), random.Next(0, sizeOfArray));
             if (!Snake.snakeBodyPoints.Contains(food))
             {
-                Console.WriteLine("doesnt");
                 map[food.X, food.Y] = new MapTile("Food", 2);
                 foodPoints.Add(food);
             }
