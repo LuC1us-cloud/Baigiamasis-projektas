@@ -71,20 +71,29 @@ namespace movable_2dmap
 
         private void Timer1_Tick(object sender, EventArgs e)
         {
-            Snake.MoveSnake(Snake.closestFood);
-            if (Snake.outputObjective == true)
+            if (FormControls.timerEnabled)
             {
-                Console.WriteLine(Snake.closestFood);
+                Snake.MoveSnake(Snake.closestFood);
+                if (Snake.outputObjective == true)
+                {
+                    Console.WriteLine(Snake.closestFood);
+                }
+                if (Snake.followSnakeHead == true)
+                {
+                    Snake.FollowSnakeHead();
+                }
+                Invalidate();
             }
-            if (Snake.followSnakeHead == true)
+            else if (FormControls.timerEnabled == false)
             {
-                Snake.FollowSnakeHead();
+                timer1.Stop();
             }
-            Invalidate();
         }
 
         private void FoodButton_Click(object sender, EventArgs e)
         {
+            FormControls.timerEnabled = true;
+            timer1.Start();
             ActiveControl = null;
             MapGenerator.GenerateFood();
             Snake.closestFood = Snake.FindClosestsFood();

@@ -6,13 +6,11 @@ namespace movable_2dmap
 {
     class Snake
     {
-        static List<Point> snakeBodyPoints = new List<Point>() { };
+        public static List<Point> snakeBodyPoints = new List<Point>() { };
         public static bool followSnakeHead = false;
         public static Point closestFood = new Point();
         static Point snakeTailPoint = new Point();
         public static bool outputObjective = false;
-        static bool hitBottom = false;
-        static bool hitSide = false;
         
         public static void GenerateSnakeHead()
         {
@@ -55,37 +53,60 @@ namespace movable_2dmap
             }
         }
 
+        static bool hitBottom = false;
+        static bool moveRight = false;
+        static bool moveLeft = false;
+
         static void PathFind2()
         {
-            if (snakeBodyPoints[0].Y == 1)
-            {
-                snakeBodyPoints[0] = new Point(snakeBodyPoints[0].X + 1, snakeBodyPoints[0].Y);
-                hitBottom = false;
-            }
-            else if (snakeBodyPoints[0].Y == MapGenerator.sizeOfArray - 2)
-            {
-                snakeBodyPoints[0] = new Point(snakeBodyPoints[0].X + 1, snakeBodyPoints[0].Y);
-                hitBottom = true;
-            }
-            if (hitSide == false && hitBottom == false && snakeBodyPoints[0].Y < MapGenerator.sizeOfArray - 1)
+            if (moveLeft == false && moveRight == false && hitBottom == false && snakeBodyPoints[0].Y < MapGenerator.sizeOfArray - 2)
             {
                 snakeBodyPoints[0] = new Point(snakeBodyPoints[0].X, snakeBodyPoints[0].Y + 1);
+                if (snakeBodyPoints[0].Y == MapGenerator.sizeOfArray - 2)
+                {
+                    hitBottom = true;
+                    moveRight = true;
+                }
             }
-            else if (hitSide == false && hitBottom == true)
+            else if (moveLeft == false && moveRight == false && hitBottom == true && snakeBodyPoints[0].Y > 1)
             {
                 snakeBodyPoints[0] = new Point(snakeBodyPoints[0].X, snakeBodyPoints[0].Y - 1);
+                if (snakeBodyPoints[0].Y == 1)
+                {
+                    hitBottom = false;
+                    moveRight = true;
+                }
             }
-            if (hitSide == true)
+            else if (moveLeft == false && moveRight == true && snakeBodyPoints[0].X < MapGenerator.sizeOfArray - 1)
+            {
+                snakeBodyPoints[0] = new Point(snakeBodyPoints[0].X + 1, snakeBodyPoints[0].Y);
+                moveRight = false;
+            }
+            else if (moveLeft == true && snakeBodyPoints[0].X > 0)
             {
                 snakeBodyPoints[0] = new Point(snakeBodyPoints[0].X - 1, snakeBodyPoints[0].Y);
             }
-            else if (snakeBodyPoints[0].X == 0)
+            else if (snakeBodyPoints[0].Y == 0)
             {
-                hitSide = false;
+                snakeBodyPoints[0] = new Point(snakeBodyPoints[0].X, snakeBodyPoints[0].Y + 1);
+                moveLeft = false;
             }
-            if (snakeBodyPoints[0].X == MapGenerator.sizeOfArray - 1 && (snakeBodyPoints[0].Y == 1 || snakeBodyPoints[0].Y == MapGenerator.sizeOfArray - 2))
+            else if (snakeBodyPoints[0].Y == MapGenerator.sizeOfArray - 1)
             {
-                hitSide = true;
+                snakeBodyPoints[0] = new Point(snakeBodyPoints[0].X, snakeBodyPoints[0].Y - 1);
+                moveLeft = false;
+            }
+            else if (snakeBodyPoints[0].Y == 1)
+            {
+                snakeBodyPoints[0] = new Point(snakeBodyPoints[0].X, snakeBodyPoints[0].Y - 1);
+                moveLeft = true;
+                moveRight = false;
+            }
+            else if (snakeBodyPoints[0].Y == MapGenerator.sizeOfArray - 2)
+            {
+                snakeBodyPoints[0] = new Point(snakeBodyPoints[0].X, snakeBodyPoints[0].Y + 1);
+                moveLeft = true;
+                moveRight = false;
             }
         }
 
@@ -109,8 +130,8 @@ namespace movable_2dmap
                     MapGenerator.foodPoints.Remove(MapGenerator.foodPoints[i]);
                     if (MapGenerator.foodPoints.Count == 0)
                     {
-                        Console.WriteLine("Game over!");
-                        Form1.ActiveForm.Close();
+                        Console.WriteLine("Out of food!");
+                        FormControls.timerEnabled = false;
                     }
                     snakeBodyPoints.Add(snakeTailPoint);
                     closestFood = FindClosestsFood();
@@ -171,12 +192,6 @@ namespace movable_2dmap
                     Console.WriteLine("Ouch! Don't bite yourself.");
                 }
             }
-        }
-
-        //https://gigi.nullneuron.net/gigilabs/a-pathfinding-example-in-c/
-        static int ComputeHScore(int x, int y, int objectiveX, int objectiveY)
-        {
-            return Math.Abs(objectiveX - x) + Math.Abs(objectiveY - y);
         }
     }
 }

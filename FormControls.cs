@@ -8,6 +8,7 @@ namespace movable_2dmap
         public static Point mouseDragStart;
         public static int startingPointX = 10;
         public static int startingPointY = 10;
+        public static bool timerEnabled = true;
 
         /// <summary>
         /// Moves the visible map window.

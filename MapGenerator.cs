@@ -153,8 +153,16 @@ namespace movable_2dmap
         {
             Random random = new Random();
             Point food = new Point(random.Next(0, sizeOfArray), random.Next(0, sizeOfArray));
-            map[food.X, food.Y] = new MapTile("Food", 2);
-            foodPoints.Add(food);
+            if (!Snake.snakeBodyPoints.Contains(food))
+            {
+                Console.WriteLine("doesnt");
+                map[food.X, food.Y] = new MapTile("Food", 2);
+                foodPoints.Add(food);
+            }
+            else
+            {
+                GenerateFood();
+            }
         }
     }
 }
