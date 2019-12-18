@@ -47,6 +47,7 @@ namespace movable_2dmap
                 GUI.DrawMapAndGrid(sender, e, FormControls.startingPointX, FormControls.startingPointY, i); 
             }
             GUI.DrawTimer(e.Graphics, Convert.ToString(tick));
+            GUI.DrawStats(e.Graphics);
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -77,6 +78,7 @@ namespace movable_2dmap
                     {
                         Snake.FollowSnakeHead(i);
                     }
+                    Snake.timeSpentAlive[i]++;
                     Invalidate();
                 }
             }

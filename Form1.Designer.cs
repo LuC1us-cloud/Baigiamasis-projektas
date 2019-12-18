@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.foodButton = new System.Windows.Forms.Button();
@@ -45,7 +46,6 @@
             // foodButton
             // 
             this.foodButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-
             this.foodButton.Location = new System.Drawing.Point(422, 87);
             this.foodButton.Name = "foodButton";
             this.foodButton.Size = new System.Drawing.Size(107, 31);
@@ -58,7 +58,6 @@
             // GraphicsToggle
             // 
             this.GraphicsToggle.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-
             this.GraphicsToggle.Location = new System.Drawing.Point(422, 124);
             this.GraphicsToggle.Name = "GraphicsToggle";
             this.GraphicsToggle.Size = new System.Drawing.Size(107, 31);
@@ -80,7 +79,6 @@
             // TrackingToggle
             // 
             this.TrackingToggle.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-
             this.TrackingToggle.Location = new System.Drawing.Point(422, 162);
             this.TrackingToggle.Name = "TrackingToggle";
             this.TrackingToggle.Size = new System.Drawing.Size(107, 31);
@@ -99,8 +97,9 @@
             this.Controls.Add(this.GameSpeedSlider);
             this.Controls.Add(this.GraphicsToggle);
             this.Controls.Add(this.foodButton);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Form1";
             this.Text = "Snake";
             this.Load += new System.EventHandler(this.Form1_Load);

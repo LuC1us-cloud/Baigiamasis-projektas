@@ -12,6 +12,7 @@ namespace movable_2dmap
         static Point[] snakeTailPoint = new Point[MapGenerator.AmountOfMaps];
         public static bool outputObjective = false;
         public static bool[] canMove = new bool[MapGenerator.AmountOfMaps];
+        public static int[] timeSpentAlive = new int[MapGenerator.AmountOfMaps];
         
         public static void GenerateSnakeHead(int index)
         {

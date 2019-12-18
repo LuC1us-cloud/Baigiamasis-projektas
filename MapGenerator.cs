@@ -28,6 +28,7 @@ namespace movable_2dmap
                 map.Add(new MapTile[sizeOfArray, sizeOfArray]);
                 FoodList[y] = new List<Point>();
                 Snake.snakeBodyPoints[y] = new List<Point>();
+                Snake.timeSpentAlive[y] = 1;
             }
                 for (int i = 0; i < AmountOfMaps; i++)
                 {
