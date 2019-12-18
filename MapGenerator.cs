@@ -90,15 +90,15 @@ namespace movable_2dmap
                         default:
                             break;
                     }
-                    e.Graphics.FillRectangle(brush, new Rectangle(new Point(index * SizeOfOneMap+mapOffset + (x - startingPointX[index]) * sizeOfTile[index], mapOffset + (y - startingPointY[index]) * sizeOfTile[index]), new Size(sizeOfTile[index], sizeOfTile[index])));
+                    e.Graphics.FillRectangle(brush, new Rectangle(new Point(index * SizeOfOneMap+mapOffset.X + (x - startingPointX[index]) * sizeOfTile[index], mapOffset.Y + (y - startingPointY[index]) * sizeOfTile[index]), new Size(sizeOfTile[index], sizeOfTile[index])));
 
 
                 }
             }
             for (int x = 0; x <= visibleMapSizeHorizontal[index]; x++)
             {
-                e.Graphics.DrawLine(new Pen(Color.FromArgb(50,0,0,0)), new Point(index * SizeOfOneMap+mapOffset + x * sizeOfTile[index], mapOffset), new Point(index * SizeOfOneMap + mapOffset + x * sizeOfTile[index], sizeOfTile[index] * visibleMapSizeVertical[index] + mapOffset));
-                e.Graphics.DrawLine(new Pen(Color.FromArgb(50, 0, 0, 0)), new Point(index* SizeOfOneMap + mapOffset, mapOffset + x * sizeOfTile[index]), new Point(index * SizeOfOneMap + sizeOfTile[index] * visibleMapSizeHorizontal[index] + mapOffset, mapOffset + x * sizeOfTile[index]));
+                e.Graphics.DrawLine(new Pen(Color.FromArgb(50,0,0,0)), new Point(index * SizeOfOneMap+mapOffset.X + x * sizeOfTile[index], mapOffset.Y), new Point(index * SizeOfOneMap + mapOffset.X + x * sizeOfTile[index], sizeOfTile[index] * visibleMapSizeVertical[index] + mapOffset.Y));
+                e.Graphics.DrawLine(new Pen(Color.FromArgb(50, 0, 0, 0)), new Point(index* SizeOfOneMap + mapOffset.X, mapOffset.Y + x * sizeOfTile[index]), new Point(index * SizeOfOneMap + sizeOfTile[index] * visibleMapSizeHorizontal[index] + mapOffset.X, mapOffset.Y + x * sizeOfTile[index]));
 
             }
         }
