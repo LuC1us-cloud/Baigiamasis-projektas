@@ -15,8 +15,9 @@ namespace movable_2dmap
         public static List<Point>[] FoodList = new List<Point>[AmountOfMaps];
         public static int [] visibleMapSizeHorizontal = { 20, 20 };
         public static int [] visibleMapSizeVertical = { 20, 20 };
-        public static bool useTextures = true;
+        public static bool useTextures = false;
         public static int SizeOfOneMap = 530;
+
         /// <summary>
         /// Fills the map with tiles.
         /// </summary>
@@ -33,6 +34,7 @@ namespace movable_2dmap
                     FillMapFirstTime(i);
                 }
         }
+
         public static void FillMapFirstTime(int index)
         {
             // Possible Tiles: Grass,  Gravel, Tree, Stone, High stone (mountain), <(Technical tiles)>.

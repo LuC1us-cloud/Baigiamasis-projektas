@@ -11,6 +11,7 @@ namespace movable_2dmap
         public static Point[] closestFood = new Point[MapGenerator.AmountOfMaps];
         static Point[] snakeTailPoint = new Point[MapGenerator.AmountOfMaps];
         public static bool outputObjective = false;
+        public static bool[] canMove = new bool[MapGenerator.AmountOfMaps];
         
         public static void GenerateSnakeHead(int index)
         {
@@ -19,6 +20,7 @@ namespace movable_2dmap
             hitBottom[index] = false;
             moveRight[index] = false;
             moveLeft[index] = false;
+            canMove[index] = true;
         }
 
         public static void MoveSnake(Point objective, int index)
@@ -169,8 +171,9 @@ namespace movable_2dmap
                     MapGenerator.FoodList[index].Remove(MapGenerator.FoodList[index][i]);
                     if (MapGenerator.FoodList[index].Count == 0)
                     {
-                        Console.WriteLine("Out of food!");
-                        FormControls.timerEnabled = false;
+                        Console.WriteLine($"Snake {index + 1} ran out of food!");
+                        //FormControls.timerEnabled = false;
+                        canMove[index] = false;
                     }
                     snakeBodyPoints[index].Add(snakeTailPoint[index]);
                     closestFood[index] = FindClosestsFood(index);

@@ -18,11 +18,5 @@ namespace movable_2dmap
             new MapTile("Food", 2),
             new MapTile("Snake", 3),
         };
-
-        public override string ToString()
-        {
-            string temp = Name + " " + ID.ToString();
-            return temp;
-        }
     }
 }
