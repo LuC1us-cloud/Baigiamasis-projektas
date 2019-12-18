@@ -18,6 +18,7 @@ namespace movable_2dmap
         public static int [] visibleMapSizeHorizontal = { 20, 20 };
         public static int [] visibleMapSizeVertical = { 20, 20 };
         public static bool useTextures = true;
+        public static int SizeOfOneMap = 530;
         /// <summary>
         /// Fills the map with tiles.
         /// </summary>
@@ -92,13 +93,13 @@ namespace movable_2dmap
                         default:
                             break;
                     }
-                    e.Graphics.FillRectangle(brush, new Rectangle(new Point(mapOffset + (x - startingPointX[index]) * sizeOfTile[index], mapOffset + (y - startingPointY[index]) * sizeOfTile[index]), new Size(sizeOfTile[index], sizeOfTile[index])));
+                    e.Graphics.FillRectangle(brush, new Rectangle(new Point(index * SizeOfOneMap+mapOffset + (x - startingPointX[index]) * sizeOfTile[index], mapOffset + (y - startingPointY[index]) * sizeOfTile[index]), new Size(sizeOfTile[index], sizeOfTile[index])));
                 }
             }
             for (int x = 0; x <= visibleMapSizeHorizontal[index]; x++)
             {
-                e.Graphics.DrawLine(new Pen(Color.FromArgb(50,0,0,0)), new Point(mapOffset + x * sizeOfTile[index], mapOffset), new Point(mapOffset + x * sizeOfTile[index], sizeOfTile[index] * visibleMapSizeVertical[index] + mapOffset));
-                e.Graphics.DrawLine(new Pen(Color.FromArgb(50, 0, 0, 0)), new Point(mapOffset, mapOffset + x * sizeOfTile[index]), new Point(sizeOfTile[index] * visibleMapSizeHorizontal[index] + mapOffset, mapOffset + x * sizeOfTile[index]));
+                e.Graphics.DrawLine(new Pen(Color.FromArgb(50,0,0,0)), new Point(index * SizeOfOneMap+mapOffset + x * sizeOfTile[index], mapOffset), new Point(index * SizeOfOneMap + mapOffset + x * sizeOfTile[index], sizeOfTile[index] * visibleMapSizeVertical[index] + mapOffset));
+                e.Graphics.DrawLine(new Pen(Color.FromArgb(50, 0, 0, 0)), new Point(index* SizeOfOneMap + mapOffset, mapOffset + x * sizeOfTile[index]), new Point(index * SizeOfOneMap + sizeOfTile[index] * visibleMapSizeHorizontal[index] + mapOffset, mapOffset + x * sizeOfTile[index]));
             }
         }
 
