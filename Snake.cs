@@ -22,17 +22,20 @@ namespace movable_2dmap
 
         public static void MoveSnake(Point objective)
         {
-            ClearSnakeTailFromMap();
-            snakeTailPoint = snakeBodyPoints[snakeBodyPoints.Count - 1];
-            for (int i = snakeBodyPoints.Count - 1; i > 0; i--)
+            for (int i = 0; i < MapGenerator.AmountOfMaps; i++)
             {
-                snakeBodyPoints[i] = snakeBodyPoints[i - 1];
+                ClearSnakeTailFromMap(i);
+                snakeTailPoint[i] = snakeBodyPoints[i][snakeBodyPoints[i].Count - 1];
+                for (int y = snakeBodyPoints[i].Count - 1; y > 0; y--)
+                {
+                    snakeBodyPoints[i][y] = snakeBodyPoints[i][y - 1];
+                }
+                PathFind(objective, i);
+                //PathFind2();
+                CollisionCheck(i);
+                TryToEat(i);
+                ConvertSnakeHeadToMap(i); 
             }
-            PathFind(objective);
-            //PathFind2();
-            CollisionCheck();
-            TryToEat();
-            ConvertSnakeHeadToMap();
         }
 
         static void PathFind(Point objective, int index)
@@ -43,47 +46,47 @@ namespace movable_2dmap
             }
             else if (snakeBodyPoints[index][0].X > objective.X)
             {
-                snakeBodyPoints[0] = new Point(snakeBodyPoints[0].X - 1, snakeBodyPoints[0].Y);
+                snakeBodyPoints[index][0] = new Point(snakeBodyPoints[index][0].X - 1, snakeBodyPoints[index][0].Y);
             }
-            else if (snakeBodyPoints[0].Y < objective.Y)
+            else if (snakeBodyPoints[index][0].Y < objective.Y)
             {
-                snakeBodyPoints[0] = new Point(snakeBodyPoints[0].X, snakeBodyPoints[0].Y + 1);
+                snakeBodyPoints[index][0] = new Point(snakeBodyPoints[index][0].X, snakeBodyPoints[index][0].Y + 1);
             }
-            else if (snakeBodyPoints[0].Y > objective.Y)
+            else if (snakeBodyPoints[index][0].Y > objective.Y)
             {
-                snakeBodyPoints[0] = new Point(snakeBodyPoints[0].X, snakeBodyPoints[0].Y - 1);
+                snakeBodyPoints[index][0] = new Point(snakeBodyPoints[index][0].X, snakeBodyPoints[index][0].Y - 1);
             }
         }
 
-        static void PathFind2()
+        static void PathFind2(int index)
         {
-            if (snakeBodyPoints[0].Y == 1)
+            if (snakeBodyPoints[index][0].Y == 1)
             {
-                snakeBodyPoints[0] = new Point(snakeBodyPoints[0].X + 1, snakeBodyPoints[0].Y);
+                snakeBodyPoints[index][0] = new Point(snakeBodyPoints[index][0].X + 1, snakeBodyPoints[index][0].Y);
                 hitBottom = false;
             }
-            else if (snakeBodyPoints[0].Y == MapGenerator.sizeOfArray - 2)
+            else if (snakeBodyPoints[index][0].Y == MapGenerator.sizeOfArray - 2)
             {
-                snakeBodyPoints[0] = new Point(snakeBodyPoints[0].X + 1, snakeBodyPoints[0].Y);
+                snakeBodyPoints[index][0] = new Point(snakeBodyPoints[index][0].X + 1, snakeBodyPoints[index][0].Y);
                 hitBottom = true;
             }
-            if (hitSide == false && hitBottom == false && snakeBodyPoints[0].Y < MapGenerator.sizeOfArray - 1)
+            if (hitSide == false && hitBottom == false && snakeBodyPoints[index][0].Y < MapGenerator.sizeOfArray - 1)
             {
-                snakeBodyPoints[0] = new Point(snakeBodyPoints[0].X, snakeBodyPoints[0].Y + 1);
+                snakeBodyPoints[index][0] = new Point(snakeBodyPoints[index][0].X, snakeBodyPoints[index][0].Y + 1);
             }
             else if (hitSide == false && hitBottom == true)
             {
-                snakeBodyPoints[0] = new Point(snakeBodyPoints[0].X, snakeBodyPoints[0].Y - 1);
+                snakeBodyPoints[index][0] = new Point(snakeBodyPoints[index][0].X, snakeBodyPoints[index][0].Y - 1);
             }
             if (hitSide == true)
             {
-                snakeBodyPoints[0] = new Point(snakeBodyPoints[0].X - 1, snakeBodyPoints[0].Y);
+                snakeBodyPoints[index][0] = new Point(snakeBodyPoints[index][0].X - 1, snakeBodyPoints[index][0].Y);
             }
-            else if (snakeBodyPoints[0].X == 0)
+            else if (snakeBodyPoints[index][0].X == 0)
             {
                 hitSide = false;
             }
-            if (snakeBodyPoints[0].X == MapGenerator.sizeOfArray - 1 && (snakeBodyPoints[0].Y == 1 || snakeBodyPoints[0].Y == MapGenerator.sizeOfArray - 2))
+            if (snakeBodyPoints[index][0].X == MapGenerator.sizeOfArray - 1 && (snakeBodyPoints[index][0].Y == 1 || snakeBodyPoints[index][0].Y == MapGenerator.sizeOfArray - 2))
             {
                 hitSide = true;
             }
@@ -91,19 +94,19 @@ namespace movable_2dmap
 
         static void ConvertSnakeHeadToMap(int index)
         {
-            MapGenerator.map[index][snakeBodyPoints[0].X, snakeBodyPoints[0].Y] = MapTile.tileList[3];
+            MapGenerator.map[index][snakeBodyPoints[index][0].X, snakeBodyPoints[index][0].Y] = MapTile.tileList[3];
         }
 
         static void ClearSnakeTailFromMap(int index)
         {
-            MapGenerator.map[index][snakeBodyPoints[snakeBodyPoints.Count - 1].X, snakeBodyPoints[snakeBodyPoints.Count - 1].Y] = MapTile.tileList[1];
+            MapGenerator.map[index][snakeBodyPoints[index][snakeBodyPoints[index].Count - 1].X, snakeBodyPoints[index][snakeBodyPoints[index].Count - 1].Y] = MapTile.tileList[1];
         }
 
         static void TryToEat(int index)
         {
             for (int i = 0; i < MapGenerator.FoodList[index].Count; i++)
             {
-                if (MapGenerator.FoodList[index][i] == snakeBodyPoints[0])
+                if (MapGenerator.FoodList[index][i] == snakeBodyPoints[index][0])
                 {
                     MapGenerator.map[index][MapGenerator.FoodList[index][i].X, MapGenerator.FoodList[index][i].Y] = MapTile.tileList[3];
                     MapGenerator.FoodList[index].Remove(MapGenerator.FoodList[index][i]);
@@ -114,8 +117,8 @@ namespace movable_2dmap
                       
                         //Form1.ActiveForm.Close();
                     }
-                    snakeBodyPoints.Add(snakeTailPoint);
-                    closestFood = FindClosestsFood();
+                    snakeBodyPoints[index].Add(snakeTailPoint[index]);
+                    closestFood[index] = FindClosestsFood(index);
                     break;
                 }
             }
@@ -123,27 +126,27 @@ namespace movable_2dmap
 
         public static void FollowSnakeHead(int index)
         {
-            if (snakeBodyPoints[0].X >= 5 && snakeBodyPoints[0].X <= MapGenerator.sizeOfArray - MapGenerator.visibleMapSizeHorizontal[index])
+            if (snakeBodyPoints[index][0].X >= 5 && snakeBodyPoints[index][0].X <= MapGenerator.sizeOfArray - MapGenerator.visibleMapSizeHorizontal[index])
             {
-                FormControls.startingPointX[index] = snakeBodyPoints[0].X - 5;
+                FormControls.startingPointX[index] = snakeBodyPoints[index][0].X - 5;
             }
-            else if (snakeBodyPoints[0].X < 5)
+            else if (snakeBodyPoints[index][0].X < 5)
             {
                 FormControls.startingPointX[index] = 0;
             }
-            else if (snakeBodyPoints[0].X > MapGenerator.sizeOfArray - MapGenerator.visibleMapSizeHorizontal[index])
+            else if (snakeBodyPoints[index][0].X > MapGenerator.sizeOfArray - MapGenerator.visibleMapSizeHorizontal[index])
             {
                 FormControls.startingPointX[index] = MapGenerator.sizeOfArray - MapGenerator.visibleMapSizeHorizontal[index];
             }
-            if (snakeBodyPoints[0].Y >= 5 && snakeBodyPoints[0].Y <= MapGenerator.sizeOfArray - MapGenerator.visibleMapSizeVertical[index])
+            if (snakeBodyPoints[index][0].Y >= 5 && snakeBodyPoints[index][0].Y <= MapGenerator.sizeOfArray - MapGenerator.visibleMapSizeVertical[index])
             {
-                FormControls.startingPointY[index] = snakeBodyPoints[0].Y - 5;
+                FormControls.startingPointY[index] = snakeBodyPoints[index][0].Y - 5;
             }
-            else if (snakeBodyPoints[0].Y < 5)
+            else if (snakeBodyPoints[index][0].Y < 5)
             {
                 FormControls.startingPointY[index] = 0;
             }
-            else if (snakeBodyPoints[0].Y > MapGenerator.sizeOfArray - MapGenerator.visibleMapSizeVertical[index])
+            else if (snakeBodyPoints[index][0].Y > MapGenerator.sizeOfArray - MapGenerator.visibleMapSizeVertical[index])
             {
                 FormControls.startingPointY[index] = MapGenerator.sizeOfArray - MapGenerator.visibleMapSizeVertical[index];
             }
@@ -155,20 +158,20 @@ namespace movable_2dmap
             Point closestFoodPoint = new Point();
             foreach (var food in MapGenerator.FoodList[index])
             {
-                if (Math.Sqrt(Math.Pow(food.X - snakeBodyPoints[0].X, 2) + Math.Pow(food.Y - snakeBodyPoints[0].Y, 2)) < shortestDistance)
+                if (Math.Sqrt(Math.Pow(food.X - snakeBodyPoints[index][0].X, 2) + Math.Pow(food.Y - snakeBodyPoints[index][0].Y, 2)) < shortestDistance)
                 {
-                    shortestDistance = Math.Sqrt(Math.Pow(food.X - snakeBodyPoints[0].X, 2) + Math.Pow(food.Y - snakeBodyPoints[0].Y, 2));
+                    shortestDistance = Math.Sqrt(Math.Pow(food.X - snakeBodyPoints[index][0].X, 2) + Math.Pow(food.Y - snakeBodyPoints[index][0].Y, 2));
                     closestFoodPoint = food;
                 }
             }
             return closestFoodPoint;
         }
 
-        static void CollisionCheck()
+        static void CollisionCheck(int index)
         {
-            for (int i = 1; i < snakeBodyPoints.Count; i++)
+            for (int i = 1; i < snakeBodyPoints[index].Count; i++)
             {
-                if (snakeBodyPoints[0] == snakeBodyPoints[i])
+                if (snakeBodyPoints[index][0] == snakeBodyPoints[index][i])
                 {
                     Console.WriteLine("Ouch! Don't bite yourself.");
                 }

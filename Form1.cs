@@ -25,15 +25,21 @@ namespace movable_2dmap
         private void Form1_Shown(object sender, EventArgs e)
         {
             MapGenerator.FillMap();
-            Snake.GenerateSnakeHead();
-            Snake.closestFood = Snake.FindClosestsFood();
+            for (int i = 0; i < MapGenerator.AmountOfMaps; i++)
+            {
+                Snake.GenerateSnakeHead(i);
+                Snake.closestFood[i] = Snake.FindClosestsFood(i); 
+            }
             timer1.Interval = 500;
             timer1.Start();
         }
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
-            MapGenerator.DrawMapAndGrid(sender, e, FormControls.startingPointX, FormControls.startingPointY);
+            for (int i = 0; i < MapGenerator.AmountOfMaps; i++)
+            {
+                MapGenerator.DrawMapAndGrid(sender, e, FormControls.startingPointX, FormControls.startingPointY, i); 
+            }
         }
 
         /// <summary>
@@ -77,15 +83,14 @@ namespace movable_2dmap
                 Invalidate();
             }
             else
-            {
-                Snake.MoveSnake(Snake.closestFood);
-                if (Snake.outputObjective == true)
+            { // sitas NEVEIKS!!!!!!!!!!!!!!!!!!
+                for (int i = 0; i < MapGenerator.AmountOfMaps; i++)
                 {
-                    Console.WriteLine(Snake.closestFood);
-                }
-                if (Snake.followSnakeHead == true)
-                {
-                    Snake.FollowSnakeHead();
+                    Snake.MoveSnake(Snake.closestFood[i]);
+                    if (Snake.followSnakeHead == true)
+                    {
+                        Snake.FollowSnakeHead(i);
+                    } 
                 }
                 Invalidate();
             }
@@ -97,7 +102,7 @@ namespace movable_2dmap
              for (int i = 0; i < MapGenerator.AmountOfMaps; i++)
             {
                 MapGenerator.GenerateFood(i);
-                Snake.closestFood = Snake.FindClosestsFood(i); 
+                Snake.closestFood[i] = Snake.FindClosestsFood(i); 
             }
             Console.WriteLine(Snake.closestFood);
             TimerActive = true;
