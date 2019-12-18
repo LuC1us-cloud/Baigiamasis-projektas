@@ -84,7 +84,7 @@ namespace movable_2dmap
             {
                 for (int i = 0; i < MapGenerator.AmountOfMaps; i++)
                 {
-                    Snake.MoveSnake(Snake.closestFood[i]);
+                    Snake.MoveSnake(Snake.closestFood[i], i);
                     if (Snake.outputObjective == true)
                     {
                         Console.WriteLine(Snake.closestFood);

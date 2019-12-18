@@ -21,22 +21,25 @@ namespace movable_2dmap
             moveLeft[index] = false;
         }
 
-        public static void MoveSnake(Point objective)
+        public static void MoveSnake(Point objective, int index)
         {
-            for (int i = 0; i < MapGenerator.AmountOfMaps; i++)
-            {
-                ClearSnakeTailFromMap(i);
-                snakeTailPoint[i] = snakeBodyPoints[i][snakeBodyPoints[i].Count - 1];
-                for (int y = snakeBodyPoints[i].Count - 1; y > 0; y--)
+                ClearSnakeTailFromMap(index);
+                snakeTailPoint[index] = snakeBodyPoints[index][snakeBodyPoints[index].Count - 1];
+                for (int y = snakeBodyPoints[index].Count - 1; y > 0; y--)
                 {
-                    snakeBodyPoints[i][y] = snakeBodyPoints[i][y - 1];
+                    snakeBodyPoints[index][y] = snakeBodyPoints[index][y - 1];
                 }
-                PathFind(objective, i);
-                //PathFind2(i);
+                if (index == 0)
+                {
+                    PathFind(objective, index);
+                }
+                else
+                {
+                    PathFind2(index);
+                }
                 //PathFind3(objective, i);
-                TryToEat(i);
-                ConvertSnakeHeadToMap(i); 
-            }
+                TryToEat(index);
+                ConvertSnakeHeadToMap(index); 
         }
 
         /// <summary>
