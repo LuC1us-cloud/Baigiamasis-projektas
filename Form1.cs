@@ -78,9 +78,9 @@ namespace movable_2dmap
                         Snake.FollowSnakeHead(i);
                     }
                     Invalidate();
-                    tick++;
                 }
             }
+            tick++;
         }
 
         private void FoodButton_Click(object sender, EventArgs e)
