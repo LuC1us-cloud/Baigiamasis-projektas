@@ -15,10 +15,10 @@ namespace movable_2dmap
         public static List<Point>[] FoodList = new List<Point>[AmountOfMaps];
         public static int [] visibleMapSizeHorizontal = { 20, 20 };
         public static int [] visibleMapSizeVertical = { 20, 20 };
-        public static bool useTextures = true;
+        public static bool useTextures = false;
         public static int SizeOfOneMap = 530;
         /// <summary>
-        /// Fills the map with tiles.
+        /// Initiates lists and arrays, then fills the maps with tiles
         /// </summary>
         public static void FillMap()
         {
@@ -37,7 +37,6 @@ namespace movable_2dmap
         {
             // Possible Tiles: Grass,  Gravel, Tree, Stone, High stone (mountain), <(Technical tiles)>.
             Random random = new Random();
-            int FoodAmount = random.Next(sizeOfArray / 3 - 10, sizeOfArray / 3 + 10);
             //fills map with grass
             for (int x = 0; x < sizeOfArray; x++)
             {
@@ -46,69 +45,23 @@ namespace movable_2dmap
                     map[index][x, y] = MapTile.tileList[1];
                 }
             }
+            GenerateFood(index);
+        }
+
+        public static void GenerateFood(int index)
+        {
+            Random random = new Random();
+            int FoodAmount = random.Next(sizeOfArray / 3 - 10, sizeOfArray / 3 + 10);
             //generates a random amount of food in the map and saves their locations to a list
             for (int food = 0; food < FoodAmount; food++)
             {
-                FoodList[index].Add(new Point(random.Next(0,sizeOfArray), random.Next(0, sizeOfArray)));
+                FoodList[index].Add(new Point(random.Next(0, sizeOfArray), random.Next(0, sizeOfArray)));
             }
             //for each saved point of food actually draws and tells the map that the food is there
             foreach (var item in FoodList[index])
             {
                 map[index][item.X, item.Y] = new MapTile("Food", 2);
             }
-        }
-
-        /// <summary>
-        /// Draws the map and grid.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        /// <param name="startingPointX"></param>
-        /// <param name="startingPointY"></param>
-        public static void DrawMapAndGrid(object sender, PaintEventArgs e, int[] startingPointX, int[] startingPointY, int index)
-        {
-            for (int x = startingPointX[index]; x < startingPointX[index] + visibleMapSizeHorizontal[index]; x++)
-            {
-                for (int y = startingPointY[index]; y < startingPointY[index] + visibleMapSizeVertical[index]; y++)
-                {
-                    Brush brush = new SolidBrush(Color.White);
-                    switch (map[index][x, y].ID)
-                    {
-                        case 0:
-                            brush = new SolidBrush(Color.Black);
-                            break;
-                        case 1:
-                            if (useTextures == true) brush = new TextureBrush(Properties.Resources.grass);
-                            else brush = new SolidBrush(Color.YellowGreen);
-                            break;
-                        case 2:
-                            if (useTextures == true) brush = new TextureBrush(Properties.Resources.food, System.Drawing.Drawing2D.WrapMode.Tile, new Rectangle(new Point(0, 0), new Size(20, 20)));
-                            else brush = new SolidBrush(Color.Brown);
-                            break;
-                        case 3: brush = new SolidBrush(Color.DarkGreen);
-                            break;
-                        default:
-                            break;
-                    }
-                    e.Graphics.FillRectangle(brush, new Rectangle(new Point(index * SizeOfOneMap+mapOffset.X + (x - startingPointX[index]) * sizeOfTile[index], mapOffset.Y + (y - startingPointY[index]) * sizeOfTile[index]), new Size(sizeOfTile[index], sizeOfTile[index])));
-
-
-                }
-            }
-            for (int x = 0; x <= visibleMapSizeHorizontal[index]; x++)
-            {
-                e.Graphics.DrawLine(new Pen(Color.FromArgb(50,0,0,0)), new Point(index * SizeOfOneMap+mapOffset.X + x * sizeOfTile[index], mapOffset.Y), new Point(index * SizeOfOneMap + mapOffset.X + x * sizeOfTile[index], sizeOfTile[index] * visibleMapSizeVertical[index] + mapOffset.Y));
-                e.Graphics.DrawLine(new Pen(Color.FromArgb(50, 0, 0, 0)), new Point(index* SizeOfOneMap + mapOffset.X, mapOffset.Y + x * sizeOfTile[index]), new Point(index * SizeOfOneMap + sizeOfTile[index] * visibleMapSizeHorizontal[index] + mapOffset.X, mapOffset.Y + x * sizeOfTile[index]));
-
-            }
-        }
-
-        public static void GenerateFood(int index)
-        {
-            Random random = new Random();
-            Point food = new Point(random.Next(0, sizeOfArray), random.Next(0, sizeOfArray));
-            map[index][food.X, food.Y] = new MapTile("Food", 2);
-            FoodList[index].Add(food);
         }
     }
 }

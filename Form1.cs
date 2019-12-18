@@ -38,7 +38,7 @@ namespace movable_2dmap
         {
             for (int i = 0; i < MapGenerator.AmountOfMaps; i++)
             {
-                MapGenerator.DrawMapAndGrid(sender, e, FormControls.startingPointX, FormControls.startingPointY, i); 
+                GUI.DrawMapAndGrid(sender, e, FormControls.startingPointX, FormControls.startingPointY, i); 
             }
             GUI.DrawTimer(e.Graphics, Convert.ToString(tick));
         }
@@ -105,17 +105,13 @@ namespace movable_2dmap
 
         private void FoodButton_Click(object sender, EventArgs e)
         {
-            FormControls.timerEnabled = true;
-            timer1.Start();
             ActiveControl = null;
              for (int i = 0; i < MapGenerator.AmountOfMaps; i++)
             {
                 MapGenerator.GenerateFood(i);
                 Snake.closestFood[i] = Snake.FindClosestsFood(i); 
             }
-            Console.WriteLine(Snake.closestFood);
-            TimerActive = true;
-            timer1.Start();
+            Invalidate();
         }
 
         private void GraphicsToggle_Click(object sender, EventArgs e)
