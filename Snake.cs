@@ -28,11 +28,15 @@ namespace movable_2dmap
             }
             PathFind(objective);
             //PathFind2();
-            CollisionCheck();
+            //PathFind3(objective);
             TryToEat();
             ConvertSnakeHeadToMap();
         }
 
+        /// <summary>
+        /// Moves to closes food, goes over itself it is needed.
+        /// </summary>
+        /// <param name="objective"></param>
         static void PathFind(Point objective)
         {
             if (snakeBodyPoints[0].X < objective.X)
@@ -57,6 +61,9 @@ namespace movable_2dmap
         static bool moveRight = false;
         static bool moveLeft = false;
 
+        /// <summary>
+        /// Sweeps map for food
+        /// </summary>
         static void PathFind2()
         {
             if (moveLeft == false && moveRight == false && hitBottom == false && snakeBodyPoints[0].Y < MapGenerator.sizeOfArray - 2)
@@ -107,6 +114,30 @@ namespace movable_2dmap
                 snakeBodyPoints[0] = new Point(snakeBodyPoints[0].X, snakeBodyPoints[0].Y + 1);
                 moveLeft = true;
                 moveRight = false;
+            }
+        }
+
+        /// <summary>
+        /// Moves to closest food, contracts if next move is over snake.
+        /// </summary>
+        /// <param name="objective"></param>
+        static void PathFind3(Point objective)
+        {
+            if (snakeBodyPoints[0].X < objective.X && !CollisionCheck(new Point(snakeBodyPoints[0].X + 1, snakeBodyPoints[0].Y)))
+            {
+                snakeBodyPoints[0] = new Point(snakeBodyPoints[0].X + 1, snakeBodyPoints[0].Y);
+            }
+            else if (snakeBodyPoints[0].X > objective.X && !CollisionCheck(new Point(snakeBodyPoints[0].X - 1, snakeBodyPoints[0].Y)))
+            {
+                snakeBodyPoints[0] = new Point(snakeBodyPoints[0].X - 1, snakeBodyPoints[0].Y);
+            }
+            else if (snakeBodyPoints[0].Y < objective.Y && !CollisionCheck(new Point(snakeBodyPoints[0].X, snakeBodyPoints[0].Y + 1)))
+            {
+                snakeBodyPoints[0] = new Point(snakeBodyPoints[0].X, snakeBodyPoints[0].Y + 1);
+            }
+            else if (snakeBodyPoints[0].Y > objective.Y && !CollisionCheck(new Point(snakeBodyPoints[0].X, snakeBodyPoints[0].Y - 1)))
+            {
+                snakeBodyPoints[0] = new Point(snakeBodyPoints[0].X, snakeBodyPoints[0].Y - 1);
             }
         }
 
@@ -182,15 +213,16 @@ namespace movable_2dmap
             return closestFoodPoint;
         }
 
-        static void CollisionCheck()
+        static bool CollisionCheck(Point futurePos)
         {
-            for (int i = 1; i < snakeBodyPoints.Count; i++)
+            for (int i = 0; i < snakeBodyPoints.Count; i++)
             {
-                if (snakeBodyPoints[0] == snakeBodyPoints[i])
+                if (futurePos == snakeBodyPoints[i])
                 {
-                    Console.WriteLine("Ouch! Don't bite yourself.");
+                    return true;
                 }
             }
+            return false;
         }
     }
 }
