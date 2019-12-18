@@ -6,10 +6,10 @@ namespace movable_2dmap
 {
     class Snake
     {
-        static List<Point>[] snakeBodyPoints = new List<Point>[MapGenerator.AmountOfMaps];
+        public static List<Point>[] snakeBodyPoints = new List<Point>[MapGenerator.AmountOfMaps];
         public static bool followSnakeHead = false;
-        public static Point[] closestFood;
-        static Point[] snakeTailPoint;
+        public static Point[] closestFood = new Point[MapGenerator.AmountOfMaps];
+        static Point[] snakeTailPoint = new Point[MapGenerator.AmountOfMaps];
         public static bool outputObjective = false;
         static bool hitBottom = false;
         static bool hitSide = false;

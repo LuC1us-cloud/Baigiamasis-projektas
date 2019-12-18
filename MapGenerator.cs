@@ -13,8 +13,7 @@ namespace movable_2dmap
         public static int sizeOfArray = 40;
         public static int [] sizeOfTile = { 20, 20 };
         public static int mapOffset = 10;
-        public static MapTile[][,] map = new MapTile[AmountOfMaps][,];
-        public static List<Biome>[] Biomes = new List<Biome>[AmountOfMaps];
+        public static List<MapTile[,]> map = new List<MapTile[,]>();
         public static List<Point>[] FoodList = new List<Point>[AmountOfMaps];
         public static int [] visibleMapSizeHorizontal = { 20, 20 };
         public static int [] visibleMapSizeVertical = { 20, 20 };
@@ -24,59 +23,29 @@ namespace movable_2dmap
         /// </summary>
         public static void FillMap()
         {
-            if (File.Exists(@"demo.txt"))
+            for (int y = 0; y < AmountOfMaps; y++)
             {
-                for (int i = 0; i < AmountOfMaps; i++)
-                {
-                    FillMapFromFile(i);
-                }
+                map.Add(new MapTile[sizeOfArray, sizeOfArray]);
+                FoodList[y] = new List<Point>();
+                Snake.snakeBodyPoints[y] = new List<Point>();
             }
-            else
-            {
                 for (int i = 0; i < AmountOfMaps; i++)
                 {
                     FillMapFirstTime(i);
-
-                }    
-            }
-        }
-
-        public static void FillMapFromFile(int index)
-        {
-            string name;
-            int id;
-            string temp = "";
-            string[] vs;
-            using (StreamReader sr = File.OpenText(@"demo.txt"))
-            {
-                for (int x = 0; x < sizeOfArray; x++)
-                {
-                    for (int y = 0; y < sizeOfArray; y++)
-                    {
-                        temp = sr.ReadLine();
-                        vs = temp.Split();
-                        name = vs[0];
-                        id = Convert.ToInt32(vs[1]);
-                        Console.WriteLine(name + " " + id);
-                        map[index][x, y] = new MapTile(name, id);
-                    }
                 }
-            }
         }
 
         public static void FillMapFirstTime(int index)
         {
             // Possible Tiles: Grass,  Gravel, Tree, Stone, High stone (mountain), <(Technical tiles)>.
             Random random = new Random();
-            int ForestPatchAmount = random.Next(sizeOfArray / 30 - 1, sizeOfArray / 30 + 1);
             int FoodAmount = random.Next(sizeOfArray / 3 - 10, sizeOfArray / 3 + 10);
-            //int GravelPatchAmount = random.Next(SizeOfArray / );
             //fills map with grass
             for (int x = 0; x < sizeOfArray; x++)
             {
                 for (int y = 0; y < sizeOfArray; y++)
                 {
-                    map[index][x, y] = new MapTile("Grass", 1); // temp
+                    map[index][x, y] = MapTile.tileList[1];
                 }
             }
             //generates a random amount of food in the map and saves their locations to a list
@@ -88,23 +57,6 @@ namespace movable_2dmap
             foreach (var item in FoodList[index])
             {
                 map[index][item.X, item.Y] = new MapTile("Food", 2);
-            }
-        }
-
-        public static void GenerateCircularBiomes(Biome biome, int sizeRadius, int index)
-        {
-            for (double x = -sizeRadius; x <= sizeRadius; x += 0.1)
-            {
-                if (Convert.ToInt32((x + biome.Location.X)) >= 0 && Convert.ToInt32((x + biome.Location.X)) < sizeOfArray && Convert.ToInt32((Math.Sqrt(Math.Abs(x * x - sizeRadius * sizeRadius)))) + biome.Location.Y >= 0 && Convert.ToInt32((Math.Sqrt(Math.Abs(x * x - sizeRadius * sizeRadius)))) + biome.Location.Y < sizeOfArray)
-                {
-                    map[index][Convert.ToInt32((x + biome.Location.X)), Convert.ToInt32((Math.Sqrt(Math.Abs(x * x - sizeRadius * sizeRadius)))) + biome.Location.Y].ID = 0;
-                    Console.WriteLine(Convert.ToInt32((x + biome.Location.X)) + " " + Convert.ToInt16((Math.Sqrt(Math.Abs(x * x - sizeRadius * sizeRadius)))) + biome.Location.Y);
-                }
-                if (Convert.ToInt32((x + biome.Location.X)) >= 0 && Convert.ToInt32((x + biome.Location.X)) < sizeOfArray && -Convert.ToInt32((Math.Sqrt(Math.Abs(x * x - sizeRadius * sizeRadius)))) + biome.Location.Y >= 0 && -Convert.ToInt32((Math.Sqrt(Math.Abs(x * x - sizeRadius * sizeRadius)))) + biome.Location.Y < sizeOfArray)
-                {
-                    map[index][Convert.ToInt32((x + biome.Location.X)), -Convert.ToInt32((Math.Sqrt(Math.Abs(x * x - sizeRadius * sizeRadius)))) + biome.Location.Y].ID = 0;
-                    Console.WriteLine(Convert.ToInt32((x + biome.Location.X)) + " " + -Convert.ToInt32((Math.Sqrt(Math.Abs(x * x - sizeRadius * sizeRadius)))) + biome.Location.Y);
-                }
             }
         }
 
