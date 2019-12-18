@@ -126,7 +126,6 @@ namespace movable_2dmap
             {
                 if (MapGenerator.foodPoints[i] == snakeBodyPoints[0])
                 {
-                    MapGenerator.map[MapGenerator.foodPoints[i].X, MapGenerator.foodPoints[i].Y] = MapTile.tileList[3];
                     MapGenerator.foodPoints.Remove(MapGenerator.foodPoints[i]);
                     if (MapGenerator.foodPoints.Count == 0)
                     {

@@ -57,12 +57,14 @@ namespace movable_2dmap
             }
         }
 
+        static int foodAmount;
+
         public static void FillMapFirstTime()
         {
             // Possible Tiles: Grass,  Gravel, Tree, Stone, High stone (mountain), <(Technical tiles)>.
             Random random = new Random();
             int ForestPatchAmount = random.Next(sizeOfArray / 30 - 1, sizeOfArray / 30 + 1);
-            int FoodAmount = random.Next(sizeOfArray / 3 - 10, sizeOfArray / 3 + 10);
+            foodAmount = random.Next(sizeOfArray / 3 - 10, sizeOfArray / 3 + 10);
             //int GravelPatchAmount = random.Next(SizeOfArray / );
             //fills map with grass
             for (int x = 0; x < sizeOfArray; x++)
@@ -72,7 +74,7 @@ namespace movable_2dmap
                     map[x, y] = new MapTile("Grass", 1); // temp
                 }
             }
-            for (int food = 0; food < FoodAmount; food++)
+            for (int food = 0; food < foodAmount; food++)
             {
                 FoodList.Add(new MapTile("Food",2));
             }
@@ -161,7 +163,7 @@ namespace movable_2dmap
             else
             {
                 GenerateFood();
-            }
+            } 
         }
     }
 }
