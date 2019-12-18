@@ -46,7 +46,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Biome.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -55,7 +54,6 @@
     </Compile>
     <Compile Include="FormControls.cs" />
     <Compile Include="GUI.cs" />
-    <Compile Include="SaveFile.cs" />
     <Compile Include="MapGenerator.cs" />
     <Compile Include="MapTile.cs" />
     <Compile Include="Program.cs" />

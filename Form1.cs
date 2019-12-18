@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Windows.Forms;
 
 namespace movable_2dmap
@@ -10,10 +9,17 @@ namespace movable_2dmap
         {
             InitializeComponent();
         }
-        public static bool TimerActive = true;
+
         private void Form1_MouseMove(object sender, MouseEventArgs e)
         {
-            FormControls.MoveVisibleMap(sender, e, 0);
+            if (e.X < (MapGenerator.SizeOfOneMap + MapGenerator.mapOffset.X + MapGenerator.visibleMapSizeHorizontal[0] * MapGenerator.sizeOfTile[0]) / 2)
+            {
+                FormControls.MoveVisibleMap(sender, e, 0);
+            }
+            else
+            {
+                FormControls.MoveVisibleMap(sender, e, 1);
+            }
         }
 
         private void Form1_MouseDown(object sender, MouseEventArgs e)
@@ -43,18 +49,6 @@ namespace movable_2dmap
             GUI.DrawTimer(e.Graphics, Convert.ToString(tick));
         }
 
-        /// <summary>
-        /// Save file button.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Button1_Click(object sender, EventArgs e)
-        {
-            ActiveControl = null;
-            //Calls the save file method and pops up the directory dialog
-            saveFileDialog1.ShowDialog();
-        }
-
         private void Form1_Load(object sender, EventArgs e)
         {
             //Fixes flickering
@@ -66,23 +60,13 @@ namespace movable_2dmap
             UpdateStyles();
         }
 
-        /// <summary>
-        /// Saves the file at the specified location.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void SaveFileDialog1_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            SaveFile.SaveFileToTxt(Path.GetFullPath(saveFileDialog1.FileName), Path.GetFileName(saveFileDialog1.FileName));
-        }
-
         static int tick = 0;
 
         public void Timer1_Tick(object sender, EventArgs e)
         {
-            if (FormControls.timerEnabled)
+            for (int i = 0; i < MapGenerator.AmountOfMaps; i++)
             {
-                for (int i = 0; i < MapGenerator.AmountOfMaps; i++)
+                if (Snake.canMove[i])
                 {
                     Snake.MoveSnake(Snake.closestFood[i], i);
                     if (Snake.outputObjective == true)
@@ -94,22 +78,19 @@ namespace movable_2dmap
                         Snake.FollowSnakeHead(i);
                     }
                     Invalidate();
+                    tick++;
                 }
-                tick++;
-            }
-            else if (FormControls.timerEnabled == false)
-            {
-                timer1.Stop();
             }
         }
 
         private void FoodButton_Click(object sender, EventArgs e)
         {
             ActiveControl = null;
-             for (int i = 0; i < MapGenerator.AmountOfMaps; i++)
+            for (int i = 0; i < MapGenerator.AmountOfMaps; i++)
             {
                 MapGenerator.GenerateFood(i);
-                Snake.closestFood[i] = Snake.FindClosestsFood(i); 
+                Snake.closestFood[i] = Snake.FindClosestsFood(i);
+                Snake.canMove[i] = true;
             }
             Invalidate();
         }
