@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 using System.Windows.Forms;
 
 namespace movable_2dmap
@@ -12,7 +10,7 @@ namespace movable_2dmap
         public static int AmountOfMaps = 2;
         public static int sizeOfArray = 40;
         public static int [] sizeOfTile = { 20, 20 };
-        public static int mapOffset = 10;
+        public static Point mapOffset = new Point( 10, 10 );
         public static List<MapTile[,]> map = new List<MapTile[,]>();
         public static List<Point>[] FoodList = new List<Point>[AmountOfMaps];
         public static int [] visibleMapSizeHorizontal = { 20, 20 };
@@ -92,13 +90,14 @@ namespace movable_2dmap
                         default:
                             break;
                     }
-                    e.Graphics.FillRectangle(brush, new Rectangle(new Point(mapOffset + (x - startingPointX[index]) * sizeOfTile[index], mapOffset + (y - startingPointY[index]) * sizeOfTile[index]), new Size(sizeOfTile[index], sizeOfTile[index])));
+                    e.Graphics.FillRectangle(brush, new Rectangle(new Point(mapOffset.X + (x - startingPointX[index]) * sizeOfTile[index], mapOffset.Y + (y - startingPointY[index]) * sizeOfTile[index]), new Size(sizeOfTile[index], sizeOfTile[index])));
+
                 }
             }
             for (int x = 0; x <= visibleMapSizeHorizontal[index]; x++)
             {
-                e.Graphics.DrawLine(new Pen(Color.FromArgb(50,0,0,0)), new Point(mapOffset + x * sizeOfTile[index], mapOffset), new Point(mapOffset + x * sizeOfTile[index], sizeOfTile[index] * visibleMapSizeVertical[index] + mapOffset));
-                e.Graphics.DrawLine(new Pen(Color.FromArgb(50, 0, 0, 0)), new Point(mapOffset, mapOffset + x * sizeOfTile[index]), new Point(sizeOfTile[index] * visibleMapSizeHorizontal[index] + mapOffset, mapOffset + x * sizeOfTile[index]));
+                e.Graphics.DrawLine(new Pen(Color.FromArgb(50,0,0,0)), new Point(mapOffset.X + x * sizeOfTile[index], mapOffset.Y), new Point(mapOffset.X + x * sizeOfTile[index], sizeOfTile[index] * visibleMapSizeVertical[index] + mapOffset.Y));
+                e.Graphics.DrawLine(new Pen(Color.FromArgb(50, 0, 0, 0)), new Point(mapOffset.X, mapOffset.Y + x * sizeOfTile[index]), new Point(sizeOfTile[index] * visibleMapSizeHorizontal[index] + mapOffset.X, mapOffset.Y + x * sizeOfTile[index]));
             }
         }
 
