@@ -10,10 +10,10 @@ namespace movable_2dmap
         {
             InitializeComponent();
         }
-
+        public static bool TimerActive = true;
         private void Form1_MouseMove(object sender, MouseEventArgs e)
         {
-            FormControls.MoveVisibleMap(sender, e);
+            FormControls.MoveVisibleMap(sender, e, 0);
         }
 
         private void Form1_MouseDown(object sender, MouseEventArgs e)
@@ -69,25 +69,39 @@ namespace movable_2dmap
             SaveFile.SaveFileToTxt(Path.GetFullPath(saveFileDialog1.FileName), Path.GetFileName(saveFileDialog1.FileName));
         }
 
-        private void Timer1_Tick(object sender, EventArgs e)
+        public void Timer1_Tick(object sender, EventArgs e)
         {
-            Snake.MoveSnake(Snake.closestFood);
-            if (Snake.outputObjective == true)
+            if (TimerActive == false)
             {
-                Console.WriteLine(Snake.closestFood);
+                timer1.Stop();
+                Invalidate();
             }
-            if (Snake.followSnakeHead == true)
+            else
             {
-                Snake.FollowSnakeHead();
+                Snake.MoveSnake(Snake.closestFood);
+                if (Snake.outputObjective == true)
+                {
+                    Console.WriteLine(Snake.closestFood);
+                }
+                if (Snake.followSnakeHead == true)
+                {
+                    Snake.FollowSnakeHead();
+                }
+                Invalidate();
             }
-            Invalidate();
         }
 
         private void FoodButton_Click(object sender, EventArgs e)
         {
             ActiveControl = null;
-            MapGenerator.GenerateFood();
-            Snake.closestFood = Snake.FindClosestsFood();
+             for (int i = 0; i < MapGenerator.AmountOfMaps; i++)
+            {
+                MapGenerator.GenerateFood(i);
+                Snake.closestFood = Snake.FindClosestsFood(i); 
+            }
+            Console.WriteLine(Snake.closestFood);
+            TimerActive = true;
+            timer1.Start();
         }
 
         private void GraphicsToggle_Click(object sender, EventArgs e)

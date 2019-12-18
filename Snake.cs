@@ -6,18 +6,18 @@ namespace movable_2dmap
 {
     class Snake
     {
-        static List<Point> snakeBodyPoints = new List<Point>() { };
+        static List<Point>[] snakeBodyPoints = new List<Point>[MapGenerator.AmountOfMaps];
         public static bool followSnakeHead = false;
-        public static Point closestFood = new Point();
-        static Point snakeTailPoint = new Point();
+        public static Point[] closestFood;
+        static Point[] snakeTailPoint;
         public static bool outputObjective = false;
         static bool hitBottom = false;
         static bool hitSide = false;
         
-        public static void GenerateSnakeHead()
+        public static void GenerateSnakeHead(int index)
         {
             Random random = new Random();
-            snakeBodyPoints.Add(new Point(random.Next(0, MapGenerator.sizeOfArray), random.Next(0, MapGenerator.sizeOfArray)));
+            snakeBodyPoints[index].Add(new Point(random.Next(0, MapGenerator.sizeOfArray), random.Next(0, MapGenerator.sizeOfArray)));
         }
 
         public static void MoveSnake(Point objective)
@@ -28,20 +28,20 @@ namespace movable_2dmap
             {
                 snakeBodyPoints[i] = snakeBodyPoints[i - 1];
             }
-            //PathFind(objective);
-            PathFind2();
+            PathFind(objective);
+            //PathFind2();
             CollisionCheck();
             TryToEat();
             ConvertSnakeHeadToMap();
         }
 
-        static void PathFind(Point objective)
+        static void PathFind(Point objective, int index)
         {
-            if (snakeBodyPoints[0].X < objective.X)
+            if (snakeBodyPoints[index][0].X < objective.X)
             {
-                snakeBodyPoints[0] = new Point(snakeBodyPoints[0].X + 1, snakeBodyPoints[0].Y);
+                snakeBodyPoints[index][0] = new Point(snakeBodyPoints[index][0].X + 1, snakeBodyPoints[index][0].Y);
             }
-            else if (snakeBodyPoints[0].X > objective.X)
+            else if (snakeBodyPoints[index][0].X > objective.X)
             {
                 snakeBodyPoints[0] = new Point(snakeBodyPoints[0].X - 1, snakeBodyPoints[0].Y);
             }
@@ -89,28 +89,30 @@ namespace movable_2dmap
             }
         }
 
-        static void ConvertSnakeHeadToMap()
+        static void ConvertSnakeHeadToMap(int index)
         {
-            MapGenerator.map[snakeBodyPoints[0].X, snakeBodyPoints[0].Y] = MapTile.tileList[3];
+            MapGenerator.map[index][snakeBodyPoints[0].X, snakeBodyPoints[0].Y] = MapTile.tileList[3];
         }
 
-        static void ClearSnakeTailFromMap()
+        static void ClearSnakeTailFromMap(int index)
         {
-            MapGenerator.map[snakeBodyPoints[snakeBodyPoints.Count - 1].X, snakeBodyPoints[snakeBodyPoints.Count - 1].Y] = MapTile.tileList[1];
+            MapGenerator.map[index][snakeBodyPoints[snakeBodyPoints.Count - 1].X, snakeBodyPoints[snakeBodyPoints.Count - 1].Y] = MapTile.tileList[1];
         }
 
-        static void TryToEat()
+        static void TryToEat(int index)
         {
-            for (int i = 0; i < MapGenerator.foodPoints.Count; i++)
+            for (int i = 0; i < MapGenerator.FoodList[index].Count; i++)
             {
-                if (MapGenerator.foodPoints[i] == snakeBodyPoints[0])
+                if (MapGenerator.FoodList[index][i] == snakeBodyPoints[0])
                 {
-                    MapGenerator.map[MapGenerator.foodPoints[i].X, MapGenerator.foodPoints[i].Y] = MapTile.tileList[3];
-                    MapGenerator.foodPoints.Remove(MapGenerator.foodPoints[i]);
-                    if (MapGenerator.foodPoints.Count == 0)
+                    MapGenerator.map[index][MapGenerator.FoodList[index][i].X, MapGenerator.FoodList[index][i].Y] = MapTile.tileList[3];
+                    MapGenerator.FoodList[index].Remove(MapGenerator.FoodList[index][i]);
+                    if (MapGenerator.FoodList[index].Count == 0)
                     {
                         Console.WriteLine("Game over!");
-                        Form1.ActiveForm.Close();
+                        Form1.TimerActive = false;
+                      
+                        //Form1.ActiveForm.Close();
                     }
                     snakeBodyPoints.Add(snakeTailPoint);
                     closestFood = FindClosestsFood();
@@ -119,39 +121,39 @@ namespace movable_2dmap
             }
         }
 
-        public static void FollowSnakeHead()
+        public static void FollowSnakeHead(int index)
         {
-            if (snakeBodyPoints[0].X >= 5 && snakeBodyPoints[0].X <= MapGenerator.sizeOfArray - MapGenerator.visibleMapSizeHorizontal)
+            if (snakeBodyPoints[0].X >= 5 && snakeBodyPoints[0].X <= MapGenerator.sizeOfArray - MapGenerator.visibleMapSizeHorizontal[index])
             {
-                FormControls.startingPointX = snakeBodyPoints[0].X - 5;
+                FormControls.startingPointX[index] = snakeBodyPoints[0].X - 5;
             }
             else if (snakeBodyPoints[0].X < 5)
             {
-                FormControls.startingPointX = 0;
+                FormControls.startingPointX[index] = 0;
             }
-            else if (snakeBodyPoints[0].X > MapGenerator.sizeOfArray - MapGenerator.visibleMapSizeHorizontal)
+            else if (snakeBodyPoints[0].X > MapGenerator.sizeOfArray - MapGenerator.visibleMapSizeHorizontal[index])
             {
-                FormControls.startingPointX = MapGenerator.sizeOfArray - MapGenerator.visibleMapSizeHorizontal;
+                FormControls.startingPointX[index] = MapGenerator.sizeOfArray - MapGenerator.visibleMapSizeHorizontal[index];
             }
-            if (snakeBodyPoints[0].Y >= 5 && snakeBodyPoints[0].Y <= MapGenerator.sizeOfArray - MapGenerator.visibleMapSizeVertical)
+            if (snakeBodyPoints[0].Y >= 5 && snakeBodyPoints[0].Y <= MapGenerator.sizeOfArray - MapGenerator.visibleMapSizeVertical[index])
             {
-                FormControls.startingPointY = snakeBodyPoints[0].Y - 5;
+                FormControls.startingPointY[index] = snakeBodyPoints[0].Y - 5;
             }
             else if (snakeBodyPoints[0].Y < 5)
             {
-                FormControls.startingPointY = 0;
+                FormControls.startingPointY[index] = 0;
             }
-            else if (snakeBodyPoints[0].Y > MapGenerator.sizeOfArray - MapGenerator.visibleMapSizeVertical)
+            else if (snakeBodyPoints[0].Y > MapGenerator.sizeOfArray - MapGenerator.visibleMapSizeVertical[index])
             {
-                FormControls.startingPointY = MapGenerator.sizeOfArray - MapGenerator.visibleMapSizeVertical;
+                FormControls.startingPointY[index] = MapGenerator.sizeOfArray - MapGenerator.visibleMapSizeVertical[index];
             }
         }
 
-        public static Point FindClosestsFood()
+        public static Point FindClosestsFood(int index)
         {
             double shortestDistance = double.MaxValue;
             Point closestFoodPoint = new Point();
-            foreach (var food in MapGenerator.foodPoints)
+            foreach (var food in MapGenerator.FoodList[index])
             {
                 if (Math.Sqrt(Math.Pow(food.X - snakeBodyPoints[0].X, 2) + Math.Pow(food.Y - snakeBodyPoints[0].Y, 2)) < shortestDistance)
                 {
