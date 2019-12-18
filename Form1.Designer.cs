@@ -53,10 +53,10 @@
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(852, 23);
-            this.button1.Margin = new System.Windows.Forms.Padding(6);
+            this.button1.Location = new System.Drawing.Point(568, 15);
+            this.button1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(214, 60);
+            this.button1.Size = new System.Drawing.Size(143, 38);
             this.button1.TabIndex = 0;
             this.button1.TabStop = false;
             this.button1.Text = "Save Map";
@@ -70,10 +70,10 @@
             // foodButton
             // 
             this.foodButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.foodButton.Location = new System.Drawing.Point(852, 95);
-            this.foodButton.Margin = new System.Windows.Forms.Padding(6);
+            this.foodButton.Location = new System.Drawing.Point(568, 61);
+            this.foodButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.foodButton.Name = "foodButton";
-            this.foodButton.Size = new System.Drawing.Size(214, 60);
+            this.foodButton.Size = new System.Drawing.Size(143, 38);
             this.foodButton.TabIndex = 1;
             this.foodButton.TabStop = false;
             this.foodButton.Text = "Spawn food";
@@ -83,10 +83,10 @@
             // GraphicsToggle
             // 
             this.GraphicsToggle.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.GraphicsToggle.Location = new System.Drawing.Point(852, 239);
-            this.GraphicsToggle.Margin = new System.Windows.Forms.Padding(6);
+            this.GraphicsToggle.Location = new System.Drawing.Point(568, 153);
+            this.GraphicsToggle.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.GraphicsToggle.Name = "GraphicsToggle";
-            this.GraphicsToggle.Size = new System.Drawing.Size(214, 60);
+            this.GraphicsToggle.Size = new System.Drawing.Size(143, 38);
             this.GraphicsToggle.TabIndex = 2;
             this.GraphicsToggle.TabStop = false;
             this.GraphicsToggle.Text = "Graphics";
@@ -96,10 +96,10 @@
             // ObjectiveOutput
             // 
             this.ObjectiveOutput.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ObjectiveOutput.Location = new System.Drawing.Point(852, 167);
-            this.ObjectiveOutput.Margin = new System.Windows.Forms.Padding(6);
+            this.ObjectiveOutput.Location = new System.Drawing.Point(568, 107);
+            this.ObjectiveOutput.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.ObjectiveOutput.Name = "ObjectiveOutput";
-            this.ObjectiveOutput.Size = new System.Drawing.Size(214, 60);
+            this.ObjectiveOutput.Size = new System.Drawing.Size(143, 38);
             this.ObjectiveOutput.TabIndex = 3;
             this.ObjectiveOutput.TabStop = false;
             this.ObjectiveOutput.Text = "Objective";
@@ -108,19 +108,20 @@
             // 
             // GameSpeedSlider
             // 
-            this.GameSpeedSlider.Location = new System.Drawing.Point(852, 380);
+            this.GameSpeedSlider.Location = new System.Drawing.Point(568, 243);
+            this.GameSpeedSlider.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.GameSpeedSlider.Name = "GameSpeedSlider";
-            this.GameSpeedSlider.Size = new System.Drawing.Size(214, 90);
+            this.GameSpeedSlider.Size = new System.Drawing.Size(143, 56);
             this.GameSpeedSlider.TabIndex = 4;
             this.GameSpeedSlider.Scroll += new System.EventHandler(this.GameSpeedSlider_Scroll);
             // 
             // TrackingToggle
             // 
             this.TrackingToggle.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TrackingToggle.Location = new System.Drawing.Point(852, 311);
-            this.TrackingToggle.Margin = new System.Windows.Forms.Padding(6);
+            this.TrackingToggle.Location = new System.Drawing.Point(568, 199);
+            this.TrackingToggle.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.TrackingToggle.Name = "TrackingToggle";
-            this.TrackingToggle.Size = new System.Drawing.Size(214, 60);
+            this.TrackingToggle.Size = new System.Drawing.Size(143, 38);
             this.TrackingToggle.TabIndex = 5;
             this.TrackingToggle.TabStop = false;
             this.TrackingToggle.Text = "Track";
@@ -129,9 +130,9 @@
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1090, 806);
+            this.ClientSize = new System.Drawing.Size(1262, 516);
             this.Controls.Add(this.TrackingToggle);
             this.Controls.Add(this.GameSpeedSlider);
             this.Controls.Add(this.ObjectiveOutput);
@@ -139,7 +140,6 @@
             this.Controls.Add(this.foodButton);
             this.Controls.Add(this.button1);
             this.KeyPreview = true;
-            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -157,11 +157,11 @@
 
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Button foodButton;
         private System.Windows.Forms.Button GraphicsToggle;
         private System.Windows.Forms.Button ObjectiveOutput;
         private System.Windows.Forms.TrackBar GameSpeedSlider;
         private System.Windows.Forms.Button TrackingToggle;
+        public System.Windows.Forms.Timer timer1;
     }
 }

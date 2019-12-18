@@ -10,10 +10,10 @@ namespace movable_2dmap
         {
             InitializeComponent();
         }
-
+        public static bool TimerActive = true;
         private void Form1_MouseMove(object sender, MouseEventArgs e)
         {
-            FormControls.MoveVisibleMap(sender, e);
+            FormControls.MoveVisibleMap(sender, e, 0);
         }
 
         private void Form1_MouseDown(object sender, MouseEventArgs e)
@@ -25,15 +25,21 @@ namespace movable_2dmap
         private void Form1_Shown(object sender, EventArgs e)
         {
             MapGenerator.FillMap();
-            Snake.GenerateSnakeHead();
-            Snake.closestFood = Snake.FindClosestsFood();
+            for (int i = 0; i < MapGenerator.AmountOfMaps; i++)
+            {
+                Snake.GenerateSnakeHead(i);
+                Snake.closestFood[i] = Snake.FindClosestsFood(i); 
+            }
             timer1.Interval = 500;
             timer1.Start();
         }
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
-            MapGenerator.DrawMapAndGrid(sender, e, FormControls.startingPointX, FormControls.startingPointY);
+            for (int i = 0; i < MapGenerator.AmountOfMaps; i++)
+            {
+                MapGenerator.DrawMapAndGrid(sender, e, FormControls.startingPointX, FormControls.startingPointY, i); 
+            }
         }
 
         /// <summary>
@@ -69,24 +75,24 @@ namespace movable_2dmap
             SaveFile.SaveFileToTxt(Path.GetFullPath(saveFileDialog1.FileName), Path.GetFileName(saveFileDialog1.FileName));
         }
 
-        private void Timer1_Tick(object sender, EventArgs e)
+        public void Timer1_Tick(object sender, EventArgs e)
         {
-            if (FormControls.timerEnabled)
-            {
-                Snake.MoveSnake(Snake.closestFood);
-                if (Snake.outputObjective == true)
-                {
-                    Console.WriteLine(Snake.closestFood);
-                }
-                if (Snake.followSnakeHead == true)
-                {
-                    Snake.FollowSnakeHead();
-                }
-                Invalidate();
-            }
-            else if (FormControls.timerEnabled == false)
+            if (TimerActive == false)
             {
                 timer1.Stop();
+                Invalidate();
+            }
+            else
+            { // sitas NEVEIKS!!!!!!!!!!!!!!!!!!
+                for (int i = 0; i < MapGenerator.AmountOfMaps; i++)
+                {
+                    Snake.MoveSnake(Snake.closestFood[i]);
+                    if (Snake.followSnakeHead == true)
+                    {
+                        Snake.FollowSnakeHead(i);
+                    } 
+                }
+                Invalidate();
             }
         }
 
@@ -95,8 +101,14 @@ namespace movable_2dmap
             FormControls.timerEnabled = true;
             timer1.Start();
             ActiveControl = null;
-            MapGenerator.GenerateFood();
-            Snake.closestFood = Snake.FindClosestsFood();
+             for (int i = 0; i < MapGenerator.AmountOfMaps; i++)
+            {
+                MapGenerator.GenerateFood(i);
+                Snake.closestFood[i] = Snake.FindClosestsFood(i); 
+            }
+            Console.WriteLine(Snake.closestFood);
+            TimerActive = true;
+            timer1.Start();
         }
 
         private void GraphicsToggle_Click(object sender, EventArgs e)
