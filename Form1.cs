@@ -40,6 +40,7 @@ namespace movable_2dmap
             {
                 MapGenerator.DrawMapAndGrid(sender, e, FormControls.startingPointX, FormControls.startingPointY, i); 
             }
+            GUI.DrawTimer(e.Graphics, Convert.ToString(tick));
         }
 
         /// <summary>
@@ -75,24 +76,30 @@ namespace movable_2dmap
             SaveFile.SaveFileToTxt(Path.GetFullPath(saveFileDialog1.FileName), Path.GetFileName(saveFileDialog1.FileName));
         }
 
+        static int tick = 0;
+
         public void Timer1_Tick(object sender, EventArgs e)
         {
-            if (TimerActive == false)
+            if (FormControls.timerEnabled)
             {
-                timer1.Stop();
-                Invalidate();
-            }
-            else
-            { // sitas NEVEIKS!!!!!!!!!!!!!!!!!!
                 for (int i = 0; i < MapGenerator.AmountOfMaps; i++)
                 {
                     Snake.MoveSnake(Snake.closestFood[i]);
+                    if (Snake.outputObjective == true)
+                    {
+                        Console.WriteLine(Snake.closestFood);
+                    }
                     if (Snake.followSnakeHead == true)
                     {
                         Snake.FollowSnakeHead(i);
-                    } 
+                    }
+                    Invalidate();
                 }
-                Invalidate();
+                tick++;
+            }
+            else if (FormControls.timerEnabled == false)
+            {
+                timer1.Stop();
             }
         }
 

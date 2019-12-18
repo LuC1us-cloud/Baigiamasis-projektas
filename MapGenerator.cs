@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 using System.Windows.Forms;
 
 namespace movable_2dmap
@@ -12,7 +10,7 @@ namespace movable_2dmap
         public static int AmountOfMaps = 2;
         public static int sizeOfArray = 40;
         public static int [] sizeOfTile = { 20, 20 };
-        public static int mapOffset = 10;
+        public static Point mapOffset = new Point( 10, 10 );
         public static List<MapTile[,]> map = new List<MapTile[,]>();
         public static List<Point>[] FoodList = new List<Point>[AmountOfMaps];
         public static int [] visibleMapSizeHorizontal = { 20, 20 };
@@ -93,6 +91,7 @@ namespace movable_2dmap
                             break;
                     }
                     e.Graphics.FillRectangle(brush, new Rectangle(new Point(index * SizeOfOneMap+mapOffset + (x - startingPointX[index]) * sizeOfTile[index], mapOffset + (y - startingPointY[index]) * sizeOfTile[index]), new Size(sizeOfTile[index], sizeOfTile[index])));
+
 
                 }
             }
