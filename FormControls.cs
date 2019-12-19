@@ -14,9 +14,13 @@ namespace movable_2dmap
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public static void MoveVisibleMap(object sender, MouseEventArgs e, int index)
+        public static void MoveVisibleMap(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
+            int index;
+            if (e.X < (MapGenerator.sizeOfOneMap + MapGenerator.mapOffset.X + MapGenerator.visibleMapSizeHorizontal[0] * MapGenerator.sizeOfTile[0]) / 2)
+                index = 0;
+            else index = 1;
+            if (e.Button == MouseButtons.Left && !Snake.followSnakeHead[index])
             {
                 int moverX;
                 int moverY;

@@ -10,28 +10,22 @@ namespace movable_2dmap
             InitializeComponent();
         }
 
-        private void Form1_MouseMove(object sender, MouseEventArgs e)
+        private void Form1_Load(object sender, EventArgs e)
         {
-            if (e.X < (MapGenerator.SizeOfOneMap + MapGenerator.mapOffset.X + MapGenerator.visibleMapSizeHorizontal[0] * MapGenerator.sizeOfTile[0]) / 2)
-            {
-                FormControls.MoveVisibleMap(sender, e, 0);
-            }
-            else
-            {
-                FormControls.MoveVisibleMap(sender, e, 1);
-            }
-        }
-
-        private void Form1_MouseDown(object sender, MouseEventArgs e)
-        {
-            //Sets the click coordinate
-            FormControls.mouseDragStart = e.Location;
+            #region Flicker fix
+            SetStyle(
+                    ControlStyles.AllPaintingInWmPaint |
+                    ControlStyles.UserPaint |
+                    ControlStyles.DoubleBuffer,
+                    true);
+            UpdateStyles(); 
+            #endregion
         }
 
         private void Form1_Shown(object sender, EventArgs e)
         {
             MapGenerator.FillMap();
-            for (int i = 0; i < MapGenerator.AmountOfMaps; i++)
+            for (int i = 0; i < MapGenerator.amountOfMaps; i++)
             {
                 Snake.GenerateSnakeHead(i);
                 Snake.closestFood[i] = Snake.FindClosestsFood(i); 
@@ -42,51 +36,40 @@ namespace movable_2dmap
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
-            for (int i = 0; i < MapGenerator.AmountOfMaps; i++)
-            {
-                MapGenerator.DrawMapAndGrid(sender, e, FormControls.startingPointX, FormControls.startingPointY, i); 
-            }
+            for (int i = 0; i < MapGenerator.amountOfMaps; i++)
+                MapGenerator.DrawMapAndGrid(e, FormControls.startingPointX, FormControls.startingPointY, i); 
             GUI.DrawTimer(e.Graphics, Convert.ToString(tick));
         }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            //Fixes flickering
-            SetStyle(
-                ControlStyles.AllPaintingInWmPaint |
-                ControlStyles.UserPaint |
-                ControlStyles.DoubleBuffer,
-                true);
-            UpdateStyles();
-        }
+        private static int tick = 0;
 
-        static int tick = 0;
-
-        public void Timer1_Tick(object sender, EventArgs e)
+        private void Timer1_Tick(object sender, EventArgs e)
         {
-            for (int i = 0; i < MapGenerator.AmountOfMaps; i++)
-            {
+            for (int i = 0; i < MapGenerator.amountOfMaps; i++)
                 if (Snake.canMove[i])
                 {
                     Snake.MoveSnake(Snake.closestFood[i], i);
-                    if (Snake.outputObjective == true)
-                    {
-                        Console.WriteLine(Snake.closestFood);
-                    }
-                    if (Snake.followSnakeHead == true)
-                    {
+                    if (Snake.followSnakeHead[i] == true)
                         Snake.FollowSnakeHead(i);
-                    }
                     Invalidate();
                     tick++;
                 }
-            }
+        }
+
+        private void Form1_MouseDown(object sender, MouseEventArgs e)
+        {
+            FormControls.mouseDragStart = e.Location;
+        }
+
+        private void Form1_MouseMove(object sender, MouseEventArgs e)
+        {
+            FormControls.MoveVisibleMap(sender, e);
         }
 
         private void FoodButton_Click(object sender, EventArgs e)
         {
             ActiveControl = null;
-            for (int i = 0; i < MapGenerator.AmountOfMaps; i++)
+            for (int i = 0; i < MapGenerator.amountOfMaps; i++)
             {
                 MapGenerator.GenerateFood(i);
                 Snake.closestFood[i] = Snake.FindClosestsFood(i);
@@ -100,30 +83,21 @@ namespace movable_2dmap
             MapGenerator.useTextures = !MapGenerator.useTextures;
         }
 
-        private void ObjectiveOutput_Click(object sender, EventArgs e)
+        private void TrackingToggle_Click(object sender, EventArgs e)
         {
-            ActiveControl = null;
-            Snake.outputObjective = !Snake.outputObjective;
+            for (int i = 0; i < MapGenerator.amountOfMaps; i++)
+                Snake.followSnakeHead[i] = !Snake.followSnakeHead[i];
         }
 
-        static int oldSliderValue = 0;
+        private static int oldSliderValue = 0;
 
         private void GameSpeedSlider_Scroll(object sender, EventArgs e)
         {
             if (GameSpeedSlider.Value > oldSliderValue && timer1.Interval / 2 > 0)
-            {
                 timer1.Interval /= 2;
-            }
             else if (GameSpeedSlider.Value < oldSliderValue && timer1.Interval < 500)
-            {
                 timer1.Interval *= 2;
-            }
             oldSliderValue = GameSpeedSlider.Value;
-        }
-
-        private void TrackingToggle_Click(object sender, EventArgs e)
-        {
-            Snake.followSnakeHead = !Snake.followSnakeHead;
         }
     }
 }
