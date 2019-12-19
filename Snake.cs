@@ -4,16 +4,16 @@ using System.Drawing;
 
 namespace movable_2dmap
 {
-    class Snake
+    internal class Snake
     {
         public static List<Point>[] snakeBodyPoints = new List<Point>[MapGenerator.AmountOfMaps];
         public static bool followSnakeHead = false;
         public static Point[] closestFood = new Point[MapGenerator.AmountOfMaps];
-        static Point[] snakeTailPoint = new Point[MapGenerator.AmountOfMaps];
+        private static Point[] snakeTailPoint = new Point[MapGenerator.AmountOfMaps];
         public static bool outputObjective = false;
         public static bool[] canMove = new bool[MapGenerator.AmountOfMaps];
         public static int[] timeSpentAlive = new int[MapGenerator.AmountOfMaps];
-        
+
         public static void GenerateSnakeHead(int index)
         {
             Random random = new Random();
@@ -26,30 +26,30 @@ namespace movable_2dmap
 
         public static void MoveSnake(Point objective, int index)
         {
-                ClearSnakeTailFromMap(index);
-                snakeTailPoint[index] = snakeBodyPoints[index][snakeBodyPoints[index].Count - 1];
-                for (int y = snakeBodyPoints[index].Count - 1; y > 0; y--)
-                {
-                    snakeBodyPoints[index][y] = snakeBodyPoints[index][y - 1];
-                }
-                if (index == 0)
-                {
-                    PathFind(objective, index);
-                }
-                else
-                {
-                    PathFind2(index);
-                }
-                //PathFind3(objective, i);
-                TryToEat(index);
-                ConvertSnakeHeadToMap(index); 
+            ClearSnakeTailFromMap(index);
+            snakeTailPoint[index] = snakeBodyPoints[index][snakeBodyPoints[index].Count - 1];
+            for (int y = snakeBodyPoints[index].Count - 1; y > 0; y--)
+            {
+                snakeBodyPoints[index][y] = snakeBodyPoints[index][y - 1];
+            }
+            if (index == 0)
+            {
+                PathFind(objective, index);
+            }
+            else
+            {
+                PathFind3(objective, index);
+            }
+            //PathFind3(objective, i);
+            TryToEat(index);
+            ConvertSnakeHeadToMap(index);
         }
 
         /// <summary>
         /// Moves to closes food, goes over itself it is needed.
         /// </summary>
         /// <param name="objective"></param>
-        static void PathFind(Point objective, int index)
+        private static void PathFind(Point objective, int index)
         {
             if (snakeBodyPoints[index][0].X < objective.X)
             {
@@ -69,14 +69,14 @@ namespace movable_2dmap
             }
         }
 
-        static bool[] hitBottom = new bool[MapGenerator.AmountOfMaps];
-        static bool[] moveRight = new bool[MapGenerator.AmountOfMaps];
-        static bool[] moveLeft = new bool[MapGenerator.AmountOfMaps];
+        private static bool[] hitBottom = new bool[MapGenerator.AmountOfMaps];
+        private static bool[] moveRight = new bool[MapGenerator.AmountOfMaps];
+        private static bool[] moveLeft = new bool[MapGenerator.AmountOfMaps];
 
         /// <summary>
         /// Sweeps map for food
         /// </summary>
-        static void PathFind2(int index)
+        private static void PathFind2(int index)
         {
             if (moveLeft[index] == false && moveRight[index] == false && hitBottom[index] == false && snakeBodyPoints[index][0].Y < MapGenerator.sizeOfArray - 2)
             {
@@ -133,7 +133,7 @@ namespace movable_2dmap
         /// Moves to closest food, contracts if next move is over snake.
         /// </summary>
         /// <param name="objective"></param>
-        static void PathFind3(Point objective, int index)
+        private static void PathFind3(Point objective, int index)
         {
             if (snakeBodyPoints[index][0].X < objective.X && !CollisionCheck(new Point(snakeBodyPoints[index][0].X + 1, snakeBodyPoints[index][0].Y), index))
             {
@@ -153,17 +153,17 @@ namespace movable_2dmap
             }
         }
 
-        static void ConvertSnakeHeadToMap(int index)
+        private static void ConvertSnakeHeadToMap(int index)
         {
             MapGenerator.map[index][snakeBodyPoints[index][0].X, snakeBodyPoints[index][0].Y] = MapTile.tileList[3];
         }
 
-        static void ClearSnakeTailFromMap(int index)
+        private static void ClearSnakeTailFromMap(int index)
         {
             MapGenerator.map[index][snakeBodyPoints[index][snakeBodyPoints[index].Count - 1].X, snakeBodyPoints[index][snakeBodyPoints[index].Count - 1].Y] = MapTile.tileList[1];
         }
 
-        static void TryToEat(int index)
+        private static void TryToEat(int index)
         {
             for (int i = 0; i < MapGenerator.FoodList[index].Count; i++)
             {
@@ -226,7 +226,7 @@ namespace movable_2dmap
             return closestFoodPoint;
         }
 
-        static bool CollisionCheck(Point futurePos, int index)
+        private static bool CollisionCheck(Point futurePos, int index)
         {
             for (int i = 0; i < snakeBodyPoints[index].Count; i++)
             {
