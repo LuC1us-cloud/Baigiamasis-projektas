@@ -68,7 +68,7 @@ namespace movable_2dmap
         public static void DrawTimer(Graphics e, string s)
         {
             string a = "Moves: " + s;
-            e.DrawString(a, new Font("Times new roman", 16), new SolidBrush(Color.DarkSlateGray), new Point(970/2-a.Length*6,  MapGenerator.mapOffset.Y));
+            e.DrawString(a, new Font("Times new roman", 16), new SolidBrush(Color.DarkSlateGray), new Point(485-a.Length*6,  MapGenerator.mapOffset.Y));
         }
     }
 }
