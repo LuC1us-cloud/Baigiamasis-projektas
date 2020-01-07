@@ -1,3 +1,2 @@
-# movable-2dmap
- 
-A project which later turned out to become a movable 2d map base for an automated snake game. 
+Documentation at:
+https://docs.google.com/document/d/14NBZ6vk6vpva5Xa2y-RXd2ZfYsxrv1l_kvzo1eL09hM/edit?usp=sharing
