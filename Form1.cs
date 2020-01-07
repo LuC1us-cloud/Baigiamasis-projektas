@@ -82,7 +82,15 @@ namespace movable_2dmap
                     Invalidate();
                 }
             }
-            tick++;
+            bool snakesAreMoving = false;
+            for (int i = 0; i < MapGenerator.AmountOfMaps; i++)
+            {
+                if (Snake.canMove[i]) snakesAreMoving = true;
+            }
+            if (snakesAreMoving == true)
+            {
+                tick++;
+            }
         }
 
         private void FoodButton_Click(object sender, EventArgs e)
